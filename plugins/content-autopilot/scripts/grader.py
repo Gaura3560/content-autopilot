@@ -448,6 +448,19 @@ def grade_content(content: str, platform: str) -> dict:
     severity_order = {"high": 0, "medium": 1, "low": 2}
     all_issues.sort(key=lambda x: severity_order.get(x.get("severity", "low"), 3))
 
+    # Platform-specific recommendations (advisory only, do not affect score)
+    recommendations = []
+    if platform == "note":
+        if not re.search(r'(?:わかること|学べること|ポイント)', content[:500]):
+            recommendations.append("冒頭に「この記事でわかること」リストを追加するとnote読者の離脱率が下がります")
+        question_headers = len(re.findall(r'^##\s.*[？?]', content, re.MULTILINE))
+        if question_headers == 0:
+            recommendations.append("見出しを疑問形にすると読者の興味を引きやすくなります（例: 「なぜAIが必要なのか」）")
+        if not re.search(r'---', content[len(content)//2:]):
+            recommendations.append("記事の中盤以降に「---」区切り線を入れると、noteでの読みやすさが向上します")
+        if not re.search(r'(?:他の(?:note|記事)|こちらも(?:おすすめ|読んで))', content):
+            recommendations.append("末尾に「他のnote記事」への誘導を追加すると回遊率が上がります")
+
     style_info = check_desu_masu_consistency(content)
 
     return {
@@ -460,6 +473,7 @@ def grade_content(content: str, platform: str) -> dict:
         "style_consistent": style_info["consistent"],
         "category_scores": category_scores,
         "issues": all_issues,
+        "recommendations": recommendations,
         "issue_count": {"high": sum(1 for i in all_issues if i["severity"] == "high"),
                         "medium": sum(1 for i in all_issues if i["severity"] == "medium"),
                         "low": sum(1 for i in all_issues if i["severity"] == "low")},
@@ -490,6 +504,13 @@ def format_human_readable(result: dict) -> str:
             severity_icon = {"high": "[!]", "medium": "[*]", "low": "[-]"}
             icon = severity_icon.get(issue["severity"], "[ ]")
             lines.append(f"  {icon} [{issue['field']}] {issue['action']}")
+        lines.append("")
+
+    if result.get("recommendations"):
+        lines.append("--- note.com向け推奨事項 ---")
+        lines.append("")
+        for rec in result["recommendations"]:
+            lines.append(f"  [+] {rec}")
         lines.append("")
 
     lines.append(f"判定: {'PASS' if result['pass'] else 'FAIL — スコア70以上で合格'}")
