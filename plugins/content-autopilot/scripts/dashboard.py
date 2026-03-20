@@ -374,6 +374,10 @@ def build_html(
         "insufficient data": "&#8212;",  # em dash
     }.get(intel["trend"], "&#8212;")
 
+    trend_color = {"improving": "#3fb950", "stable": "#c9d1d9", "declining": "#f85149"}.get(intel["trend"], "#c9d1d9")
+
+    streak_color = "#3fb950" if intel["streak"] >= 3 else "#c9d1d9" if intel["streak"] >= 1 else "#f85149"
+
     profile_banner = ""
     if is_default_profile:
         profile_banner = """
@@ -524,7 +528,10 @@ a:hover{{text-decoration:underline}}
   height:100%;
   border-radius:9px;
   transition:width 0.6s ease;
+  transform-origin:left;
+  animation:barGrow 0.8s ease-out;
 }}
+@keyframes barGrow{{from{{transform:scaleX(0)}}to{{transform:scaleX(1)}}}}
 .bar-value{{
   font-size:0.8rem;
   color:#c9d1d9;
@@ -588,7 +595,9 @@ tr:hover td{{background:#161b2280}}
   border-radius:10px;
   padding:1rem;
   text-align:center;
+  animation:fadeIn 0.5s ease-out;
 }}
+@keyframes fadeIn{{from{{opacity:0;transform:translateY(10px)}}to{{opacity:1;transform:translateY(0)}}}}
 .intel-card .value{{
   font-size:1.5rem;
   font-weight:700;
@@ -627,7 +636,7 @@ tr:hover td{{background:#161b2280}}
         <div class="label">Today's Quality</div>
       </div>
       <div class="intel-card">
-        <div class="value">{trend_icon}</div>
+        <div class="value" style="color:{trend_color}">{trend_icon}</div>
         <div class="label">Activity Trend</div>
       </div>
       <div class="intel-card">
@@ -635,7 +644,7 @@ tr:hover td{{background:#161b2280}}
         <div class="label">Top Title Logic</div>
       </div>
       <div class="intel-card">
-        <div class="value">{intel["streak"]}d</div>
+        <div class="value" style="color:{streak_color}">{intel["streak"]}d</div>
         <div class="label">Streak</div>
       </div>
     </div>
@@ -668,6 +677,11 @@ tr:hover td{{background:#161b2280}}
   </div>
 
 </div>
+
+  <footer style="text-align:center;padding:2rem;color:#484f58;font-size:0.75rem">
+    Content Autopilot v9.0 &mdash; Generated {escape(date_str)}
+  </footer>
+
 </body>
 </html>"""
 

@@ -102,12 +102,12 @@ def grade_hook(content: str, platform: str) -> tuple[int, list[dict]]:
     hook_len = count_japanese_chars(first_content_line)
 
     # Check hook length (Japanese: 40 chars ideal for hooks)
-    if hook_len > 60:
-        score -= 3
+    if hook_len > 40:
+        score -= 2
         issues.append({
             "field": "hook",
             "action": f"フック文を40文字以内に短縮する（現在{hook_len}文字）",
-            "severity": "medium",
+            "severity": "high",
         })
 
     # Check for hook patterns: quotes, questions, numbers, inversion
@@ -120,11 +120,11 @@ def grade_hook(content: str, platform: str) -> tuple[int, list[dict]]:
     pattern_matches = sum(1 for pat, _ in hook_patterns if re.search(pat, first_content_line))
 
     if pattern_matches == 0:
-        score -= 2
+        score -= 4
         issues.append({
             "field": "hook",
             "action": "フックに引用（「」）、疑問（？）、数字、意外性の要素を1つ以上追加する",
-            "severity": "medium",
+            "severity": "high",
         })
 
     return score, issues
@@ -192,6 +192,16 @@ def grade_readability(content: str) -> tuple[int, list[dict]]:
                 "severity": "medium",
             })
 
+    # 5. Paragraph density check (note platform needs sufficient content)
+    total_content_len = count_japanese_chars(content)
+    if total_content_len < 1500:
+        score -= 3
+        issues.append({
+            "field": "density",
+            "action": "コンテンツ量が不足しています",
+            "severity": "high",
+        })
+
     return score, issues
 
 
@@ -239,8 +249,15 @@ def grade_platform_fit(content: str, platform: str) -> tuple[int, list[dict]]:
     char_count = count_japanese_chars(content)
 
     if platform == "note":
-        if char_count < 2000:
-            score -= 4
+        if char_count < 1000:
+            score = 0
+            issues.append({
+                "field": "length",
+                "action": f"文字数が大幅に不足（現在{char_count}文字、最低1000文字必要。note推奨: 2000-5000文字）",
+                "severity": "high",
+            })
+        elif char_count < 2000:
+            score = max(0, 2)
             issues.append({
                 "field": "length",
                 "action": f"文字数を増やす（現在{char_count}文字、note推奨: 2000-5000文字）",
@@ -367,7 +384,20 @@ def grade_ai_smell(content: str) -> tuple[int, list[dict]]:
         (r"(?:まず|最初に)(?:は|、)?(?:～|ー)?(?:について|に関して)", "冗長な前置きを削除して本題から書く"),
         (r"いかがでしたか", "「いかがでしたか」を削除し、具体的なまとめや次のアクションを書く"),
         (r"(?:本(?:記事|稿)|この(?:記事|投稿))(?:では|で)", "「本記事では」を削除。読者は記事を読んでいることを知っている"),
+        (r"(?:つまり|要するに)(?:、)?(?:～|ー)?", "「つまり」を削除して直接結論を述べる"),
+        (r"(?:それでは|では)(?:早速|さっそく)", "「では早速」を削除してすぐ本題に入る"),
+        (r"(?:～について|に関して)(?:見ていきましょう|解説します|紹介します)", "「～について解説します」を削除。すでに読んでいる読者には不要"),
     ]
+
+    # Check for repeated "一方で" (multiple occurrences = AI pattern)
+    ippou_count = len(re.findall(r"一方で", content))
+    if ippou_count >= 2:
+        score -= 2
+        issues.append({
+            "field": "ai_smell",
+            "action": f"「一方で」の繰り返しを減らす（{ippou_count}回使用）。別の接続詞を使う",
+            "severity": "medium",
+        })
 
     for pattern, fix in ai_patterns_ja:
         if re.search(pattern, content):
@@ -422,7 +452,7 @@ def grade_content(content: str, platform: str) -> dict:
 
     return {
         "score": total_score,
-        "grade": "A" if total_score >= 85 else "B" if total_score >= 70 else "C" if total_score >= 50 else "D",
+        "grade": "A" if total_score >= 90 else "B" if total_score >= 75 else "C" if total_score >= 60 else "D",
         "platform": platform,
         "char_count": count_japanese_chars(content),
         "kanji_ratio": round(kanji_ratio(content) * 100, 1),
