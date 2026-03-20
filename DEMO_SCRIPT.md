@@ -490,3 +490,8 @@ Content Autopilot。一度命じたら、コンテンツは自律的に生まれ
 - [ ] ナレーション全文を2-3回通し読みして時間を計測
 - [ ] バックアップ映像（事前フル実行の録画）を用意
 - [ ] GitHubリポジトリURLを確認してクロージング画面に反映
+- [ ] ダッシュボードのスクリーンショットを撮影してREADMEに追加:
+      1. `open ~/Desktop/content-autopilot-output/dashboard.html`
+      2. Cmd+Shift+4 でスクリーンショット撮影
+      3. `docs/dashboard-screenshot.png` に保存
+      4. READMEの「HTMLダッシュボード」セクションに `![Dashboard](docs/dashboard-screenshot.png)` を追加
