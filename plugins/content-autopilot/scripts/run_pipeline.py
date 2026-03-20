@@ -259,6 +259,17 @@ def main():
 
     p("")
 
+    # Next steps guide
+    p("--- 次のステップ ---")
+    p("")
+    p(f"  note:  open ~/Desktop/content-autopilot-output/note_{today}{suffix}.md")
+    p(f"         → note.com で「投稿」→ マークダウン貼り付け")
+    p(f"  X:     open ~/Desktop/content-autopilot-output/x_{today}{suffix}.md")
+    p(f"         → 1/Nから順にツイート")
+    p(f"  IG:    open ~/Desktop/content-autopilot-output/instagram_{today}{suffix}.md")
+    p(f"         → キャプションをコピー → アプリに貼り付け")
+    p("")
+
 
 if __name__ == "__main__":
     main()

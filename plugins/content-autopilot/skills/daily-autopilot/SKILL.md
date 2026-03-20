@@ -354,6 +354,34 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/autopilot.py --mode summary
 データが不足している場合（初回〜3回目の実行）は取得可能な項目のみ表示し、不足項目は `N/A (need {N} more runs)` と表示する。
 
 
+
+## 公開手順ガイド（パイプライン完了後に自動表示）
+
+パイプライン完了後、以下の「次のステップ」を必ず表示する:
+
+```
+--- 次のステップ ---
+
+📝 note:
+  1. ファイルを開く: open ~/Desktop/content-autopilot-output/note_{date}.md
+  2. note.com にログイン → 「投稿」→ マークダウン貼り付け
+  3. 有料/無料は自動判定済み（ファネルステージに基づく）
+  4. OGP画像は別途設定（Level 2ならgemini-imageで自動生成可能）
+
+🐦 X (Twitter):
+  1. ファイルを開く: open ~/Desktop/content-autopilot-output/x_{date}.md
+  2. 1/Nから順にツイート。各ツイート間に「---」で区切り済み
+  3. 最終ツイートのnote誘導CTAを確認
+
+📸 Instagram:
+  1. ファイルを開く: open ~/Desktop/content-autopilot-output/instagram_{date}.md
+  2. キャプションをコピー → Instagramアプリに貼り付け
+  3. ハッシュタグは本文末尾に25-30個配置済み
+
+📊 ダッシュボード:
+  → ~/Desktop/content-autopilot-output/dashboard.html（ブラウザで開き済み）
+```
+
 ## エラーリカバリ
 
 | エラー | 自動対応 | 進捗表示 |
