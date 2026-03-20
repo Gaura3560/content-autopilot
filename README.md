@@ -16,6 +16,32 @@ Claude Code plugin for fully autonomous content creation.<br>
 
 ---
 
+## 実行するとこうなる
+
+```
+━━━━ Content Autopilot ━━━━━━━━━━━━━━━━━━
+[1/8] Profile loaded (auto-created: default)
+      Theme: "AI x ビジネス" | Stage: TOFU
+[2/8] Funnel analysis: TOFU 50% → target 50% ✓
+      Decision: TOFU trending selected
+[3/8] WebSearch: 3 candidates found
+      → "AIエージェントが変える働き方" (score: 0.91) ← selected
+[4/8] Generating: note(3,200字) + X(6tweets) + IG
+[5/8] Quality gate:
+      note: 68/100 → auto-improving hook + structure...
+      note: 81/100 ✓ (improved +13)
+      X: 79/100 ✓
+      IG: 76/100 ✓
+[6/8] Pre-publish: 5/5 checks passed ✓
+[7/8] History recorded → Dashboard opened in browser
+[8/8] Pipeline complete ✓
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**人間の操作: `/daily-autopilot` の1コマンドのみ。残りはすべて自律判断。**
+
+---
+
 ## "他のAIツールとの違い"
 
 「AIでコンテンツを作る」ツールは多い。しかし、そのほとんどは**人間がプロンプトを考え、出力を読み、判断する**ことを前提としている。Content Autopilotは違う。
