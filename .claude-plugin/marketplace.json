@@ -1,19 +1,19 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "content-autopilot",
-  "description": "129-skill self-evolving content OS — adapts to your energy and mood, audits its own precision, and simplifies itself with meta-learning",
+  "description": "129-skill fully autonomous content OS — real-time progress display, HTML dashboard, cumulative intelligence, Japanese-native 6-axis grading, zero-setup pipeline",
   "owner": {
     "name": "sudotakao"
   },
   "metadata": {
-    "description": "The final form: 129 skills that adapt to you, audit themselves, and compress into natural language"
+    "description": "Command once, autonomous forever: 129 skills + 10 Python scripts for fully autonomous content creation with real-time progress, quality gates, and visual dashboard"
   },
   "plugins": [
     {
       "name": "content-autopilot",
       "source": "./plugins/content-autopilot",
-      "description": "129-skill content OS: energy/mood adaptation, milestone celebration, annual reviews, system self-audit, smart natural-language suggestions, feedback loop monitoring, content memoir, skill composition, and precision accountability",
-      "version": "7.0.0",
+      "description": "129-skill autonomous content OS: state-machine pipeline, 6-axis Japanese-native grading, HTML dashboard, cumulative intelligence, zero-setup auto-profile, fallback topic library",
+      "version": "9.0.0",
       "author": {
         "name": "sudotakao"
       },

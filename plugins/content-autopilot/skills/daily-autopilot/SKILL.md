@@ -1,414 +1,312 @@
 ---
 name: daily-autopilot
-description: Full content automation orchestrator — runs the complete pipeline from trend research to published content in one command. Chains setup-profile, trend-scout, content-writer, and visual-creator with minimal user intervention. Includes funnel stage tracking, balance check, content history recording, series integration, engagement templates, and optional X API auto-posting.
+description: 完全自律型コンテンツパイプライン — トレンド調査からコンテンツ生成・品質チェック・履歴記録まで、ユーザー介入ゼロで完走する。状態機械ベースで全判断を自動化。リアルタイム進捗表示付き。
 ---
 
-# Daily Autopilot
+# Daily Autopilot — 完全自律コンテンツ生成
 
-Run the complete content pipeline in one command. From trend research to ready-to-publish content.
+ワンコマンドでコンテンツパイプラインを完走する。**ユーザーへの質問は一切しない。**
+各ステップの進捗をリアルタイムで表示し、判断根拠を可視化する。
 
-## When to Activate
+## 起動条件
 
-- User says `/daily-autopilot` or `/autopilot`
-- User says "today's content", "generate today's posts", or "run the content pipeline"
-- Scheduled daily content workflow
+- `/daily-autopilot` または `/autopilot`
+- 「今日のコンテンツ」「投稿を作って」「コンテンツパイプライン実行」
 
-## Workflow Overview
-
-```
-Step 1: Profile Check
-  └─ profile.json exists? → Yes: continue / No: run setup-profile
-
-Step 2.0: Series Check (NEW)
-  └─ active-series.json has active series? → suggest next part
-
-Step 2: Trend Scout
-  └─ Research → 3-4 topic ideas with funnel stage tags
-
-Step 2.5: Funnel Balance Check (content-history.json based)
-  └─ Analyze content-history.json → recommend optimal funnel stage
-
-Step 3: User Selection (primary human intervention)
-  └─ User picks topic (from series, trend ideas, or custom)
-
-Step 4: Content Writer
-  └─ Title selection (auto-select #1 or user picks) → generate content
-
-Step 5: Visual Creator
-  └─ Generate images for each platform
-
-Step 6: Output Summary
-  └─ All files listed + copy-paste text displayed
-
-Step 6.5: Record to Content History (NEW)
-  └─ Append entry to content-history.json
-
-Step 7: Optional Auto-Post (X only)
-  └─ If X API credentials exist → confirm → post
-
-Step 7.5: Engagement Suggestions (NEW)
-  └─ Suggest engagement templates for today's content
-```
-
-## Detailed Steps
-
-### Step 1: Profile Check
-
-```python
-# Pseudo-logic
-if file_exists("~/.content-autopilot/profile.json"):
-    profile = load("~/.content-autopilot/profile.json")
-    print(f"Profile loaded: {profile.theme.main}")
-    print(f"Platforms: {', '.join(profile.platforms)}")
-else:
-    print("No profile found. Starting setup...")
-    # → Run setup-profile skill
-    # → Return here after profile is created
-```
-
-### Step 2.0: Series Check (NEW)
-
-Check if there is an active content series:
-
-```python
-# Pseudo-logic
-if file_exists("~/.content-autopilot/active-series.json"):
-    series_data = load("~/.content-autopilot/active-series.json")
-    active = [s for s in series_data.series if s.status == "active"]
-    if active:
-        series = active[0]
-        next_part = next(p for p in series.parts if p.status == "pending")
-        print(f"Active series: {series.title}")
-        print(f"Next: Part {next_part.part} — {next_part.title}")
-        print(f"Platform: {next_part.platform} | Stage: {next_part.stage}")
-        print(f"Hook: {next_part.hook}")
-        print(f"Callback: {next_part.callback}")
-        # Offer to continue series or pick a new topic
-```
-
-If active series exists, present the option:
-```
-Active series detected: "{series_title}" (Part {N}/{total})
-
-1. Continue series — Part {N}: "{part_title}" ({platform})
-2. Skip series today — pick a new topic instead
-
-Select (1/2):
-```
-
-If user selects 1, skip Step 2 (Trend Scout) and go directly to Step 3 with the series part as the selected topic. Pass series metadata (hook, callback, cliffhanger) to content-writer for series mode.
-
-If user selects 2, proceed with normal trend scout.
-
-If no active series, skip this step silently.
-
-### Step 2: Run Trend Scout
-
-Invoke the `trend-scout` skill:
-- Pass profile.json keywords and theme
-- Receive 3 topic ideas (trending / overseas / evergreen)
-- Display to user
-
-### Step 2.5: Funnel Balance Check (content-history.json based)
-
-If `funnel.enabled = true`, check the content history for funnel stage balance:
-
-1. Read `~/.content-autopilot/content-history.json`
-2. Filter entries from the last 7 days
-3. Count TOFU/MOFU/BOFU entries
-4. Display balance report:
+## 状態機械（全判断を自動化）
 
 ```
-直近7日のファネルバランス:
-  TOFU: 4日 (57%) — 拡散重視
-  MOFU: 2日 (29%) — 信頼構築
-  BOFU: 1日 (14%) — マネタイズ
+STATE: BANNER (Step 0/8)
+  → パイプライン開始のビジュアルヘッダーを表示
+  → STATE: INIT
 
-推奨: 今日はMOFU (信頼構築) コンテンツがおすすめです
-理想バランス: TOFU 50% / MOFU 30% / BOFU 20%
+  Output to user:
+    ━━━━ Content Autopilot ━━━━━━━━━━━━━━━━━━
+
+STATE: INIT (Step 1/8)
+  → python3 ${CLAUDE_PLUGIN_ROOT}/scripts/autopilot.py --mode execute
+  → status == "ready" → STATE: SEARCH
+  → status == "error" && error == "profile_missing"
+    → python3 ${CLAUDE_PLUGIN_ROOT}/scripts/init_data.py 実行
+    → 再度 autopilot.py --mode execute
+    → status == "ready" → STATE: SEARCH
+    → 2回目もerror → エラー報告して終了
+
+  Output to user (status == "ready"):
+    [1/8] Profile loaded ({profile_name})
+          Theme: "{theme}" | Stage: {recommended_stage}
+
+  Output to user (profile auto-created):
+    [1/8] Profile loaded (auto-created: default)
+          Theme: "{theme}" | Stage: {recommended_stage}
+
+  Output to user (fatal error):
+    [1/8] ✗ Profile load failed: {error_message}
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    (pipeline aborted)
+
+STATE: SEARCH (Step 2/8)
+  → autopilot.pyの結果からファネルバランスを表示
+  → WebSearch(execution_plan[0].query)
+  → 検索結果あり:
+    → 結果からトピックを1つ自動選択（最もエンゲージメントが期待できるもの）
+    → STATE: GENERATE
+  → 検索結果なし / WebSearch失敗:
+    → execution_planのfallback_topicを使用
+    → STATE: GENERATE
+
+  Output to user (検索成功):
+    [2/8] Funnel analysis: {stage} {current}% → target {target}% {✓ or ↑adjust}
+          Decision: {stage} {trending/balanced/catch-up} selected
+    [3/8] WebSearch: {N} candidates found
+          → "{selected_topic}" (score: {score}) ← selected
+          → "{candidate_2}" (score: {score})
+          → "{candidate_3}" (score: {score})
+
+  Output to user (検索失敗 → fallback):
+    [2/8] Funnel analysis: {stage} {current}% → target {target}% {✓ or ↑adjust}
+          Decision: {stage} {trending/balanced/catch-up} selected
+    [3/8] WebSearch: failed → fallback topic used
+          → "{fallback_topic}" ← auto-selected from library
+
+STATE: GENERATE (Step 4/8)
+  → content_specに従いコンテンツ一括生成
+  → 各プラットフォーム用ファイルを保存:
+    - ~/Desktop/content-autopilot-output/note_{date}{suffix}.md
+    - ~/Desktop/content-autopilot-output/x_{date}{suffix}.md
+    - ~/Desktop/content-autopilot-output/instagram_{date}{suffix}.md
+  → STATE: GRADE
+
+  Output to user:
+    [4/8] Generating: note({N}字) + X({N}tweets) + IG
+
+STATE: GRADE (Step 5/8)
+  → python3 ${CLAUDE_PLUGIN_ROOT}/scripts/grader.py {note_file} --json
+  → score >= 70 → STATE: CHECK
+  → score < 70:
+    → issuesのfield/actionを読み取り、自動修正
+    → 再grading（最大2回）
+    → 2回修正してもscore < 70 → 警告付きでSTATE: CHECK
+
+  Output to user (全合格):
+    [5/8] Quality gate:
+          note: {score}/100 ✓
+          X: {score}/100 ✓
+          IG: {score}/100 ✓
+
+  Output to user (自動修正あり):
+    [5/8] Quality gate:
+          note: {initial_score}/100 → auto-improving {issue_field}...
+          note: {improved_score}/100 ✓ (improved +{delta})
+          X: {score}/100 ✓
+          IG: {score}/100 ✓
+
+  Output to user (2回修正しても不合格):
+    [5/8] Quality gate:
+          note: {initial_score}/100 → auto-improving...
+          note: {final_score}/100 ⚠ (below 70 after 2 retries)
+          X: {score}/100 ✓
+          IG: {score}/100 ✓
+
+STATE: CHECK (Step 6/8)
+  → python3 ${CLAUDE_PLUGIN_ROOT}/scripts/pre_publish.py {note_file} --json
+  → all_pass == true → STATE: RECORD
+  → all_pass == false:
+    → 失敗チェック項目を読み取り、自動修正
+    → 再check（最大2回）
+    → 2回修正しても失敗 → 警告付きでSTATE: RECORD
+
+  Output to user (全合格):
+    [6/8] Pre-publish: {N}/{N} checks passed ✓
+
+  Output to user (修正後合格):
+    [6/8] Pre-publish: {passed}/{total} checks → auto-fixing {failed_items}...
+          Pre-publish: {N}/{N} checks passed ✓ (fixed {M} issues)
+
+  Output to user (修正しても不合格):
+    [6/8] Pre-publish: {passed}/{total} checks ⚠
+          Failed: {failed_check_names} (continuing with warning)
+
+STATE: RECORD (Step 7/8)
+  → python3 ${CLAUDE_PLUGIN_ROOT}/scripts/record_history.py \
+      --topic "{topic}" --stage {stage} --category {category} \
+      --date {date} --platforms {platforms} \
+      [--suffix {suffix}] [--series-id {series_id}]
+  → STATE: DASHBOARD
+
+  Output to user:
+    [7/8] History recorded: entry {date}-{suffix}
+
+STATE: DASHBOARD (Step 7.5/8 — Dashboard Generation)
+  → python3 ${CLAUDE_PLUGIN_ROOT}/scripts/dashboard.py
+  → open ~/Desktop/content-autopilot-output/dashboard.html
+  → STATE: REPORT
+
+  Output to user:
+    [7.5] Dashboard generated → opening in browser...
+
+STATE: REPORT (Step 8/8)
+  → python3 ${CLAUDE_PLUGIN_ROOT}/scripts/autopilot.py --mode summary
+  → summaryデータからIntelligence Reportを構築
+  → パイプライン完了フッターを表示 → 終了
+
+  Output to user:
+    [8/8] Pipeline complete ✓
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    --- Intelligence Report ---
+    Total runs: {total} | Avg quality: {avg} → Today: {today_score} ({↑N or ↓N})
+    Best title logic: {pattern_1} ({pct}%) > {pattern_2} ({pct}%)
+    Quality trend: {↑ or ↓}{delta} pts/week over {N} weeks
+    Funnel health: TOFU {pct}% / MOFU {pct}% / BOFU {pct}% ({balanced ✓ or imbalanced ⚠})
 ```
 
-**Ideal balance targets:**
-| Stage | Target % | Purpose |
-|-------|----------|---------|
-| TOFU | 50% | Maximize reach and new followers |
-| MOFU | 30% | Build trust and expertise credibility |
-| BOFU | 20% | Drive monetization |
+## 進捗表示ルール
 
-If balance is significantly off (>15% deviation), highlight the recommended stage in the topic selection.
+1. **各Stateの "Output to user:" に記載された内容をそのまま出力すること。**省略・変更不可。
+2. プレースホルダ `{...}` はスクリプト出力やコンテキストの実値で置換する。
+3. スコアの `✓` / `⚠` / `✗` は以下の基準:
+   - `✓` : 合格（score >= 70, all checks passed）
+   - `⚠` : 警告付き続行（score < 70 after retries, some checks failed after retries）
+   - `✗` : 致命的エラー（pipeline中断）
+4. ステップ番号は `[N/8]` 形式で固定。Dashboard生成は `[7.5]` とする。
+5. Intelligence Reportの各項目が取得不能な場合は `N/A` と表示（項目自体は省略しない）。
+6. ヘッダー・フッターの罫線幅は固定（ヘッダー: `━━━━ Content Autopilot ━━━━━━━━━━━━━━━━━━`、フッター: `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`）。
 
-If no history exists (first run), skip the balance check and note:
+## 自動判断ルール（ユーザーに聞かない）
+
+### トピック選択
+1. アクティブシリーズがある → シリーズの次パートを自動使用
+2. シリーズなし → WebSearchトップ結果から自動選択
+3. WebSearch失敗 → フォールバックトピック自動使用
+
+### ファネルステージ選択
+- autopilot.py --mode execute の recommended_stage を使用
+- 直近7日のバランスから自動計算（TOFU 50% / MOFU 30% / BOFU 20%）
+
+### note種別（free/paid）
+- TOFU/MOFU → free
+- BOFU → paid
+
+### タイトル選択
+- 生成した候補の1番目を自動採用
+
+### 既に今日生成済みの場合
+- **ユーザーに聞かずに**サフィックス付きで追加生成
+- 例: note_2026-03-21-002.md
+
+### 品質不合格時
+- grader/pre_publishの具体的なissueを読み取り自動修正
+- 最大2回リトライ、それでも不合格なら警告付きで続行
+
+## コンテンツ生成仕様
+
+### note記事
+- 文字数: 2000-5000文字（日本語）
+- セクション: 3-7個（##見出し付き）
+- 文体: です/ます体で統一
+- 漢字率: 20-40%
+- 1段落: 3文以内
+- フック: 最初の1文は40文字以内
+- CTA: noteフォロー + リードマグネット（TOFU/MOFU）/ 有料記事購入（BOFU）
+- まとめセクション必須
+
+### Xスレッド
+- ツイート数: 5-7
+- 各ツイート: 140文字以内（日本語）
+- 最終ツイートにnote誘導CTA
+- スレッド番号付き（1/5, 2/5...）
+
+### Instagramキャプション
+- フック（最初の行）: 125文字以内
+- ハッシュタグ: 25-30個
+- CTA: プロフィールリンク誘導
+
+## 完了レポート形式
+
+完了レポートは、リアルタイム進捗表示の累積として自動構成される。
+パイプライン全体の出力は以下の形式となる:
+
 ```
-ファネル履歴: まだデータがありません（初回実行）
-今日のおすすめ: TOFU — まずは拡散重視で始めましょう
-```
+━━━━ Content Autopilot ━━━━━━━━━━━━━━━━━━
+[1/8] Profile loaded (auto-created: default)
+      Theme: "AI x ビジネス" | Stage: TOFU
+[2/8] Funnel analysis: TOFU 52% → target 50% ✓
+      Decision: TOFU trending selected
+[3/8] WebSearch: 3 candidates found
+      → "AIで月10時間の作業削減" (score: 0.92) ← selected
+      → "ChatGPT新機能まとめ" (score: 0.71)
+      → "AI導入の失敗例" (score: 0.65)
+[4/8] Generating: note(3,200字) + X(6tweets) + IG
+[5/8] Quality gate:
+      note: 64/100 → auto-improving hook...
+      note: 82/100 ✓ (improved +18)
+      X: 78/100 ✓
+      IG: 75/100 ✓
+[6/8] Pre-publish: 5/5 checks passed ✓
+[7/8] History recorded: entry 2026-03-21-001
+[7.5] Dashboard generated → opening in browser...
+[8/8] Pipeline complete ✓
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-### Step 3: User Selection
-
-This is the **only point** where user input is required:
-
-```
-Which topic would you like to write about today?
-
-1. [Trending] [TOFU] {title}
-   → Funnel: X/Instagramで拡散向き、noteに誘導
-
-2. [Overseas] [MOFU] {title}
-   → Funnel: note無料記事で信頼構築向き
-
-3. [Evergreen] [BOFU] {title}
-   → Funnel: note有料記事でマネタイズ向き
-
-Enter 1, 2, or 3:
-```
-
-> Funnel stage tags and recommendations appear only when `funnel.enabled = true`.
-
-Wait for user response. Do not proceed without selection.
-
-### Step 4: Run Content Writer
-
-Invoke the `content-writer` skill with:
-- Selected topic and angle
-- Profile style settings
-- Target platforms from profile
-
-Content writer will:
-1. Generate 3 title candidates (bestseller logic)
-2. Ask user to pick a title (or auto-select #1 if user says "auto")
-3. Generate platform-native content for each platform
-4. Save files to `~/Desktop/content-autopilot-output/`
-
-### Step 5: Run Visual Creator
-
-Invoke the `visual-creator` skill with:
-- Selected title
-- Brand colors from profile
-- Platform list
-
-Visual creator will:
-1. Generate (or provide prompts for) platform-specific images
-2. Save images to `~/Desktop/content-autopilot-output/`
-
-### Step 6: Output Summary
-
-Display a complete summary of everything generated:
-
-```
-============================================
-  Content Autopilot — Daily Output Summary
-============================================
-
-Date: 2026-03-18
-Topic: {selected topic title}
-Category: {trending/overseas/evergreen}
-Funnel Stage: {TOFU/MOFU/BOFU}  ← only shown when funnel.enabled = true
-
---- Generated Files ---
-
-note:
-  Content: ~/Desktop/content-autopilot-output/note_2026-03-18.md
-  Image:   ~/Desktop/content-autopilot-output/note_ogp_2026-03-18.png
-  Type:    {free/paid} | Length: {X} chars
-  Funnel:  {MOFU/BOFU} → {CTA target description}  ← omit if funnel disabled
-
-X (Twitter):
-  Content: ~/Desktop/content-autopilot-output/x_2026-03-18.md
-  Image:   ~/Desktop/content-autopilot-output/x_card_2026-03-18.png
-  Format:  {single/thread (N tweets)}
-  Funnel:  TOFU → noteへ誘導CTA付き  ← omit if funnel disabled
-
-Instagram:
-  Content: ~/Desktop/content-autopilot-output/instagram_2026-03-18.md
-  Image:   ~/Desktop/content-autopilot-output/instagram_2026-03-18.png
-  Hashtags: {N} tags
-  Funnel:  TOFU → noteへ誘導CTA付き  ← omit if funnel disabled
-
-============================================
-
-Copy-paste ready content is displayed below for each platform.
+--- Intelligence Report ---
+Total runs: 12 | Avg quality: 79 → Today: 84 (↑5)
+Best title logic: Numbers (42%) > Paradox (28%)
+Quality trend: ↑3.2 pts/week over 4 weeks
+Funnel health: TOFU 48% / MOFU 32% / BOFU 20% (balanced ✓)
 ```
 
-> When `funnel.enabled = false`, omit all "Funnel Stage" and "Funnel:" lines from the summary.
+## Dashboard Generation
 
-Then display the full text content for each platform, clearly separated, so the user can copy-paste directly.
+Step 7.5 で呼び出されるダッシュボード生成:
 
-### Step 6.5: Record to Content History (NEW)
+1. `python3 ${CLAUDE_PLUGIN_ROOT}/scripts/dashboard.py` を実行
+   - content-history.json を読み込み、HTMLダッシュボードを生成
+   - 出力先: `~/Desktop/content-autopilot-output/dashboard.html`
+2. `open ~/Desktop/content-autopilot-output/dashboard.html` でブラウザ表示
+3. ダッシュボードには以下を含む:
+   - ファネルバランスの円グラフ
+   - 品質スコアの推移グラフ
+   - 直近7日のコンテンツカレンダー
+   - タイトルパターン分析
 
-After generating content, automatically append an entry to `~/.content-autopilot/content-history.json`:
+## Intelligence Report
 
-```python
-# Pseudo-logic
-history = load_or_create("~/.content-autopilot/content-history.json")
-
-entry = {
-    "id": f"{today}-{next_sequence_number(history, today)}",
-    "date": today,
-    "topic": selected_topic,
-    "category": topic_category,  # trending/overseas/evergreen/competitor_gap
-    "funnel_stage": funnel_stage,  # TOFU/MOFU/BOFU or null
-    "platforms": {
-        # For each platform that content was generated for:
-        "note": {
-            "title": note_title,
-            "file": f"note_{today}.md",
-            "type": "free",  # or "paid"
-            "char_count": len(note_content)
-        },
-        "x": {
-            "title": x_title,
-            "file": f"x_{today}.md",
-            "format": "thread",  # or "single"
-            "tweet_count": tweet_count
-        },
-        "instagram": {
-            "title": instagram_title,
-            "file": f"instagram_{today}.md",
-            "hashtag_count": hashtag_count
-        }
-    },
-    "title_logics_used": selected_title_logics,  # from content-writer
-    "content_pillar": content_pillar,  # from funnel-designer or null
-    "source_url": source_url,
-    "source": "original",  # or "repurpose"
-    "series_id": series_id,  # from active series or null
-    "ab_titles": {
-        "chosen": chosen_title,
-        "alternative": runner_up_title,
-        "winner": null  # set later with /title-winner
-    }
-}
-
-history["entries"].append(entry)
-save("~/.content-autopilot/content-history.json", history)
-```
-
-If content-history.json doesn't exist, create it with `{"version": "1.0", "entries": []}` first.
-
-If writing for an active series, also update the series part status:
-```python
-if series_id:
-    series_data = load("~/.content-autopilot/active-series.json")
-    # Find the part and update status
-    part.status = "published"
-    part.content_file = output_filename
-    save("~/.content-autopilot/active-series.json", series_data)
-```
-
-Display confirmation:
-```
-Content recorded in history (entry: {entry_id})
-```
-
-### Step 7: Optional X Auto-Post
-
-Check for X API environment variables:
+Step 8/8 の最終レポートで表示。データは以下のコマンドで取得:
 
 ```bash
-# Required env vars for auto-posting
-X_API_KEY
-X_API_SECRET
-X_ACCESS_TOKEN
-X_ACCESS_SECRET
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/autopilot.py --mode summary
 ```
 
-**If X API credentials exist:**
-```
-X API credentials detected. Would you like to post to X now?
+レポート項目:
+- **Total runs**: 累計実行回数と平均品質スコア、本日との差分
+- **Best title logic**: タイトルパターンの成功率ランキング
+- **Quality trend**: 週次の品質スコア変動率
+- **Funnel health**: TOFU/MOFU/BOFUの割合とバランス判定
 
-Preview:
-{first tweet text}
+データが不足している場合（初回〜3回目の実行）は取得可能な項目のみ表示し、不足項目は `N/A (need {N} more runs)` と表示する。
 
-Post now? (yes / no / edit first)
-```
+## エラーリカバリ
 
-If user confirms:
-1. Post single tweet or thread using X API v2
-2. Display posted tweet URL
-3. Report success/failure
+| エラー | 自動対応 | 進捗表示 |
+|--------|---------|----------|
+| profile.json未作成 | init_data.py実行 → 1回リトライ | `[1/8] Profile loaded (auto-created: default)` |
+| WebSearch失敗 | フォールバックトピックライブラリから自動選択 | `[3/8] WebSearch: failed → fallback topic used` |
+| grader不合格 | issues読み取り → 自動修正 → 最大2回リトライ | `note: {score}/100 → auto-improving {field}...` |
+| pre_publish不合格 | 失敗項目を自動修正 → 最大2回リトライ | `Pre-publish: {N}/{M} checks → auto-fixing...` |
+| 画像MCP未接続 | テキストプロンプトのみ出力（画像スキップ） | `(image generation skipped: MCP not connected)` |
+| 出力ディレクトリなし | mkdir -p で自動作成 | `(output directory created)` |
+| 今日既に生成済み | -002サフィックスで自動追加生成 | suffix がステップ内で自動反映 |
+| dashboard.py失敗 | 警告を表示しSTATE: REPORTへ続行 | `[7.5] Dashboard generation failed ⚠ (skipped)` |
+| autopilot.py --mode summary失敗 | Intelligence Reportを `N/A` で埋めて表示 | `--- Intelligence Report ---` の各項目が `N/A` |
 
-**If X API credentials do NOT exist:**
-```
-X auto-posting is not configured.
-To enable, set these environment variables:
-  export X_API_KEY="your-key"
-  export X_API_SECRET="your-secret"
-  export X_ACCESS_TOKEN="your-token"
-  export X_ACCESS_SECRET="your-secret"
+## クイックモード
 
-For now, copy-paste the content above to post manually.
-```
+`/autopilot quick` — 通常モードと同じ（全て自動のため差分なし）。
 
-**note and Instagram:**
-Auto-posting is not supported (no public API / complex OAuth).
-Content is provided as copy-paste text + images.
+## 出力先
 
-### Step 7.5: Engagement Suggestions (NEW)
-
-After content is ready, suggest engagement strategies:
-
-```
---- Engagement Suggestions ---
-
-Today's content: "{topic_title}" ({funnel_stage})
-
-Suggested engagement actions:
-1. Reply template for comments:
-   "{thank_template based on content topic}"
-
-2. Conversation starter to post alongside:
-   "{conversation_starter based on content topic}"
-
-3. Cross-platform nudge:
-   "{funnel_nudge if funnel enabled, otherwise share prompt}"
-
-Run /engagement for more templates.
-```
-
-This provides 1 template from each engagement category (thank, converse, funnel) tailored to today's specific content. The templates are brief — for full sets, direct user to `/engagement`.
-
-## Quick Mode
-
-If the user says `/autopilot quick` or "auto everything":
-- Skip title selection (use the first candidate)
-- Skip topic selection (use the #1 trending topic)
-- Generate all content without intermediate confirmations
-- Display final summary only
-
-## Error Recovery
-
-| Error | Recovery |
-|-------|----------|
-| Profile missing | Run setup-profile, then restart |
-| WebSearch fails | Use domain knowledge for topic ideas, note the limitation |
-| Image MCP unavailable | Output text prompts instead |
-| X API post fails | Show error, save content for manual posting |
-| Output directory not writable | Report error, ask user to create ~/Desktop/content-autopilot-output/ manually |
-
-## Daily Consistency Tips
-
-Display at the end of each run:
-
-```
-Tips for consistency:
-- Run /autopilot at the same time each day
-- Post note in the morning (highest engagement: 7-9 AM)
-- Post X during lunch (12-1 PM) or evening (7-9 PM)
-- Post Instagram in the evening (6-9 PM)
-- Batch a week's content on Sunday with /autopilot x7 (coming soon)
-```
-
-## Output
-
-- Text content files in `~/Desktop/content-autopilot-output/`
-- Image files in `~/Desktop/content-autopilot-output/`
-- Copy-paste ready content displayed in terminal
-- Optional: posted tweet URL (if X API auto-post is used)
-
-## Capability Levels
-
-| Level | Requirements | Features |
-|-------|-------------|----------|
-| Level 1 | Claude Code + WebSearch | Text content only, image prompts |
-| Level 2 | + gemini-image or fal.ai MCP | Text + auto-generated images |
-| Level 3 | + X API credentials | Text + images + X auto-posting |
+- テキスト: `~/Desktop/content-autopilot-output/`
+- 画像: `~/Desktop/content-autopilot-output/`
+- ダッシュボード: `~/Desktop/content-autopilot-output/dashboard.html`
+- 履歴: `~/.content-autopilot/content-history.json`

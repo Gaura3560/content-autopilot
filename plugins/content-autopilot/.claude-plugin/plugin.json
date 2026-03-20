@@ -1,7 +1,7 @@
 {
   "name": "content-autopilot",
-  "version": "7.0.0",
-  "description": "129-skill self-evolving content OS — adapts to your energy, mood, and behavior. Celebrates wins, audits itself, measures its own precision, and simplifies 129 commands into 'just tell me what you want.' The final form.",
+  "version": "9.0.0",
+  "description": "129-skill fully autonomous content OS — real-time progress display, HTML dashboard, cumulative intelligence, state machine orchestration, Japanese-native 6-axis grading, and script-based quality gates.",
   "author": {
     "name": "sudotakao"
   },
