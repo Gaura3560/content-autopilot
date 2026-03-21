@@ -109,7 +109,7 @@ STATE: IMAGE (Step 4.5 — テキスト入りOGP/SNS画像生成)
     → 記事タイトルをテキストとして含むOGP画像を自動生成
     → product_name: テーマ名（例: "AI活用ガイド"）
     → headline: 記事タイトル（40文字以内に短縮）
-    → description: 記事の内容を1行で説明（「無料」「ダウンロード」「テンプレート付き」等の宣伝文句は絶対に入れない）
+    → description: 記事の「この記事でわかること」リストの1項目目をそのまま使う。記事に書いていない内容は絶対に入れない
     → style: "modern, dark gradient, professional, Japanese"
     → note用: aspect_ratio "16:9"
     → X用: aspect_ratio "16:9"
@@ -140,7 +140,7 @@ STATE: IMAGE (Step 4.5 — テキスト入りOGP/SNS画像生成)
     → 記事タイトルをテキストとして含むOGP画像を自動生成
     → product_name: テーマ名（例: "AI活用ガイド"）
     → headline: 記事タイトル（40文字以内に短縮）
-    → description: 記事の内容を1行で説明（「無料」「ダウンロード」「テンプレート付き」等の宣伝文句は絶対に入れない）
+    → description: 記事の「この記事でわかること」リストの1項目目をそのまま使う。記事に書いていない内容は絶対に入れない
     → style: "modern, dark gradient, professional, Japanese"
     → note用: aspect_ratio "16:9"
     → X用: aspect_ratio "16:9"
