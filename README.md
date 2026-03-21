@@ -46,16 +46,18 @@ note: 82/100 ✓ (自動改善 +14点)
 
 ### Claudeに直接頼んだ場合との違い
 
-| | Claudeに直接依頼 | Content Autopilot |
-|---|---|---|
-| **品質スコア** | 56/100 (D) | 94/100 (A) |
-| **AI臭検出** | 5パターン | 0パターン |
-| **文字数** | 655文字 | 2,000文字 |
-| **フック** | 「本記事では〜」 | 疑問・数字で読者を掴む |
-| **ファネル** | なし | TOFU/MOFU/BOFU自動選択 |
-| **品質保証** | なし | 6軸自動採点 + 自動改善 |
+Claudeは優秀なライターですが、**記憶・計算・可視化**はできません:
 
-同じClaude 4.6モデルを使っていても、品質ゲートとプラットフォーム最適化で**38点の差**が出ます。
+| Claudeにできないこと | Content Autopilotの実装 |
+|---|---|
+| 過去の実行履歴を覚える | `content-history.json` に全記録。セッションを跨いで蓄積 |
+| ファネルバランスを計算する | `funnel_balance.py` がTOFU/MOFU/BOFU比率を自動計算 |
+| 再現可能な品質採点をする | `grader.py` が6軸・10パターンで毎回同じ基準で採点 |
+| 品質トレンドを追跡する | `autopilot.py --mode summary` で推移を数値化 |
+| ダッシュボードを生成する | `dashboard.py` がHTMLで品質・ファネル・履歴を可視化 |
+| パフォーマンスを学習する | `/log-performance` でPV・いいね数を記録→次回に反映 |
+
+`python3 run_pipeline.py --compare` で品質差を実際に確認できます（Claude直接: 56点 vs Autopilot: 94点）。
 
 ---
 
@@ -144,7 +146,8 @@ python3 test_scripts.py              # 23テスト全通過を確認
 | `/trend-scout` | トレンドリサーチ |
 | `/content-analytics` | コンテンツ分析 |
 | `/deep-audit` | システム監査 |
-| `/skills` | 全129スキル一覧 |
+| `/log-performance` | PV・いいね数を記録→学習 |
+| `/skills` | 全スキル一覧 |
 
 ---
 
