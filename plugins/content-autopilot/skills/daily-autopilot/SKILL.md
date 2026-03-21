@@ -180,6 +180,9 @@ STATE: REPORT (Step 8/8)
   → summaryデータからIntelligence Reportを構築
   → パイプライン完了フッターを表示 → 終了
 
+  → 生成されたファイルをユーザーのためにopenコマンドで開く:
+    open ~/Desktop/content-autopilot-output/note_{date}{suffix}.md
+
   Output to user:
     [8/8] Pipeline complete ✓
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

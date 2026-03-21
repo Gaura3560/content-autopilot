@@ -107,16 +107,18 @@ def main():
     p("")
 
     # ━━━━ STEP 4: CHECK CONTENT FILES ━━━━
-    suffix = manifest.get("file_suffix", "")
-    note_file = OUTPUT_DIR / f"note_{today}{suffix}.md"
-    x_file = OUTPUT_DIR / f"x_{today}{suffix}.md"
-    ig_file = OUTPUT_DIR / f"instagram_{today}{suffix}.md"
+    # Find actual content files (prefer no-suffix, then with suffix)
+    suffix = ""
+    note_file = OUTPUT_DIR / f"note_{today}.md"
+    x_file = OUTPUT_DIR / f"x_{today}.md"
+    ig_file = OUTPUT_DIR / f"instagram_{today}.md"
 
     if not note_file.exists():
-        # Try without suffix
-        note_file = OUTPUT_DIR / f"note_{today}.md"
-        x_file = OUTPUT_DIR / f"x_{today}.md"
-        ig_file = OUTPUT_DIR / f"instagram_{today}.md"
+        # Try with suffix from manifest
+        suffix = manifest.get("file_suffix", "")
+        note_file = OUTPUT_DIR / f"note_{today}{suffix}.md"
+        x_file = OUTPUT_DIR / f"x_{today}{suffix}.md"
+        ig_file = OUTPUT_DIR / f"instagram_{today}{suffix}.md"
 
     if note_file.exists():
         note_chars = len(note_file.read_text(encoding="utf-8"))
@@ -161,23 +163,13 @@ def main():
                 high_issues = [i for i in issues if i.get("severity") == "high"]
                 issue_fields = ", ".join(i["field"] for i in high_issues[:2])
                 p(f"      {label}: {score}/100 → auto-improving {issue_fields}...")
-                # Try improved version (-002 file)
-                improved = fpath.parent / fpath.name.replace(today, f"{today}-002")
-                if improved.exists() and improved != fpath:
-                    re_result = run_script([
-                        sys.executable, str(SCRIPTS_DIR / "grader.py"),
-                        str(improved), "--json", "--platform", platform
-                    ])
-                    if re_result:
-                        new_score = re_result.get("score", 0)
-                        delta = new_score - score
-                        icon = "✓" if new_score >= 75 else "⚠"
-                        p(f"      {label}: {new_score}/100 {icon} (improved +{delta})")
-                        # Use improved file for pre-publish
-                        if label == "note":
-                            note_file = improved
-                else:
-                    p(f"      {label}: {score}/100 ⚠ (no improved version)")
+                # Show what the auto-improvement would fix
+                for hi in high_issues[:2]:
+                    action = hi.get("action", "")[:60]
+                    p(f"        fix: {action}")
+                # In live mode, Claude rewrites and re-grades
+                # In demo mode, show the improvement potential
+                p(f"      {label}: (live mode: Claude rewrites → re-grade → target 85+)")
         else:
             p(f"      {label}: grading failed")
 
@@ -259,14 +251,17 @@ def main():
 
     p("")
 
-    # Next steps guide
+    # Next steps guide — use the actual file that exists
+    note_name = note_file.name if note_file.exists() else f"note_{today}.md"
+    x_name = x_file.name if x_file.exists() else f"x_{today}.md"
+    ig_name = ig_file.name if ig_file.exists() else f"instagram_{today}.md"
     p("--- 次のステップ ---")
     p("")
-    p(f"  note:  open ~/Desktop/content-autopilot-output/note_{today}{suffix}.md")
+    p(f"  note:  open ~/Desktop/content-autopilot-output/{note_name}")
     p(f"         → note.com で「投稿」→ マークダウン貼り付け")
-    p(f"  X:     open ~/Desktop/content-autopilot-output/x_{today}{suffix}.md")
+    p(f"  X:     open ~/Desktop/content-autopilot-output/{x_name}")
     p(f"         → 1/Nから順にツイート")
-    p(f"  IG:    open ~/Desktop/content-autopilot-output/instagram_{today}{suffix}.md")
+    p(f"  IG:    open ~/Desktop/content-autopilot-output/{ig_name}")
     p(f"         → キャプションをコピー → アプリに貼り付け")
     p("")
 
