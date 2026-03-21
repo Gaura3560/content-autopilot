@@ -17,11 +17,15 @@ from data_manager import (
     ensure_data_dir, ensure_output_dir, load_json, save_json, now_iso,
 )
 
+from datetime import date as _date, timedelta as _td
+yesterday = (_date.today() - _td(days=1)).isoformat()
+two_days_ago = (_date.today() - _td(days=2)).isoformat()
+
 SAMPLE_HISTORY = {
     "version": "1.0",
     "entries": [
         {
-            "id": "2026-03-19-001", "date": "2026-03-19",
+            "id": f"{two_days_ago}-001", "date": two_days_ago,
             "topic": "リモートワーク効率化の5つの秘訣",
             "category": "trending", "funnel_stage": "TOFU",
             "platforms": {"note": {"title": "", "file": "", "type": "free", "char_count": 2200},
@@ -31,7 +35,7 @@ SAMPLE_HISTORY = {
             "ab_titles": {"chosen": "", "alternative": "", "winner": None}
         },
         {
-            "id": "2026-03-20-001", "date": "2026-03-20",
+            "id": f"{yesterday}-001", "date": yesterday,
             "topic": "ChatGPT vs Claude — プロが教える使い分け",
             "category": "evergreen", "funnel_stage": "MOFU",
             "platforms": {"note": {"title": "", "file": "", "type": "free", "char_count": 3100},
