@@ -150,11 +150,12 @@ python3 test_scripts.py              # 23テスト全通過を確認
 | **Gmail** | 記事をGmail下書きに保存 | Gmail MCP |
 | **Gemini** | OGP画像を自動生成（16:9） | gemini-image MCP |
 | **Google Analytics** | PVデータ取得→パフォーマンス分析 | GA MCP |
+| **Google Calendar** | 投稿リマインダーを自動登録 | Calendar MCP |
 | **Zapier** | X/Instagram投稿をトリガー | Zapier MCP |
 
 MCP未設定の場合はスキップされ、ローカルファイル出力のみで完了します。
 
-**実証済み**: Notion（ページ自動作成）、Gmail（HTML下書き保存）、Gemini（OGP画像生成）、note.com（エディタ自動起動）、X（投稿画面プリフィル）の6連携を確認（Notion, Gmail, Gemini画像, Google Analytics, note.com, X）。
+**実証済み**: Notion（ページ自動作成）、Gmail（HTML下書き保存）、Gemini（OGP画像生成）、note.com（エディタ自動起動）、X（投稿画面プリフィル）の7連携を確認（Notion, Gmail, Gemini画像, Google Analytics, Google Calendar, note.com, X）。
 
 手動で連携する場合: `/publish`
 

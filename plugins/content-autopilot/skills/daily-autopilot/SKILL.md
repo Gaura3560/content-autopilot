@@ -463,6 +463,17 @@ MCPツール mcp__claude_ai_Gmail__gmail_create_draft が利用可能な場合:
   Output to user (成功):
     [7.76] Gmail → 下書き保存 ✓
 
+
+### Google Calendar連携
+MCPツール mcp__claude_ai_Google_Calendar__gcal_create_event が利用可能な場合:
+1. 翌日の投稿リマインダーをカレンダーに自動登録
+2. イベント名: "[Content Autopilot] コンテンツ投稿 — note / X / Instagram"
+3. 説明: ファイルパス + 品質スコア + ファネルステージ
+4. 30分前にポップアップ通知
+
+  Output to user (成功):
+    [7.77] Calendar → 投稿リマインダー登録 ✓
+
 ### Zapier連携
 MCPツール `mcp__claude_ai_Zapier__get_configuration_url` が利用可能な場合:
 1. Zapierの設定URLを取得してユーザーに表示
