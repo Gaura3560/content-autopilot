@@ -103,13 +103,18 @@ STATE: GENERATE (Step 4/8)
     - ~/Desktop/content-autopilot-output/x_{date}{suffix}.md
     - ~/Desktop/content-autopilot-output/instagram_{date}{suffix}.md
   → 
-STATE: IMAGE (Step 4.5 — OGP画像生成)
-  → MCPツール mcp__gemini-image__generate_image が利用可能か確認
+STATE: IMAGE (Step 4.5 — テキスト入りOGP/SNS画像生成)
+  → MCPツール mcp__gemini-image__generate_ad_creative が利用可能か確認
   → 利用可能:
-    → 記事のトピックに基づいたOGP画像を自動生成
-    → プロンプト: "Modern minimalist blog header for {topic}. Dark gradient, geometric shapes, professional."
-    → aspect_ratio: "16:9"
-    → 保存先: ~/Desktop/content-autopilot-output/note_ogp_{date}.png
+    → 記事タイトルをテキストとして含むOGP画像を自動生成
+    → product_name: テーマ名（例: "AI活用ガイド"）
+    → headline: 記事タイトル（40文字以内に短縮）
+    → description: 記事の要約1行
+    → style: "modern, dark gradient, professional, Japanese"
+    → note用: aspect_ratio "16:9"
+    → X用: aspect_ratio "16:9"
+    → Instagram用: aspect_ratio "1:1"
+    → 保存先: ~/Desktop/content-autopilot-output/note_ogp_{date}.png, x_ogp_{date}.png, ig_ogp_{date}.png
   → 利用不可: スキップ
 
   Output to user (成功):
@@ -129,13 +134,18 @@ STATE: GRADE
     [4/8] Generating: note({N}字) + X({N}tweets) + IG
 
 
-STATE: IMAGE (Step 4.5 — OGP画像生成)
-  → MCPツール mcp__gemini-image__generate_image が利用可能か確認
+STATE: IMAGE (Step 4.5 — テキスト入りOGP/SNS画像生成)
+  → MCPツール mcp__gemini-image__generate_ad_creative が利用可能か確認
   → 利用可能:
-    → 記事のトピックに基づいたOGP画像を自動生成
-    → プロンプト: "Modern minimalist blog header for {topic}. Dark gradient, geometric shapes, professional."
-    → aspect_ratio: "16:9"
-    → 保存先: ~/Desktop/content-autopilot-output/note_ogp_{date}.png
+    → 記事タイトルをテキストとして含むOGP画像を自動生成
+    → product_name: テーマ名（例: "AI活用ガイド"）
+    → headline: 記事タイトル（40文字以内に短縮）
+    → description: 記事の要約1行
+    → style: "modern, dark gradient, professional, Japanese"
+    → note用: aspect_ratio "16:9"
+    → X用: aspect_ratio "16:9"
+    → Instagram用: aspect_ratio "1:1"
+    → 保存先: ~/Desktop/content-autopilot-output/note_ogp_{date}.png, x_ogp_{date}.png, ig_ogp_{date}.png
   → 利用不可: スキップ
 
   Output to user (成功):
