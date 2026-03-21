@@ -12,7 +12,9 @@ from pathlib import Path
 from typing import Any, Optional
 
 DATA_DIR = Path.home() / ".content-autopilot"
-OUTPUT_DIR = Path.home() / "Desktop" / "content-autopilot-output"
+# Output directory: ~/Desktop/content-autopilot-output (falls back to ~/content-autopilot-output)
+_desktop = Path.home() / "Desktop"
+OUTPUT_DIR = (_desktop / "content-autopilot-output") if _desktop.is_dir() else (Path.home() / "content-autopilot-output")
 
 PROFILE_PATH = DATA_DIR / "profile.json"
 HISTORY_PATH = DATA_DIR / "content-history.json"

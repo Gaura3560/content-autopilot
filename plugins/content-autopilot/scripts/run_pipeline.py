@@ -22,7 +22,8 @@ from datetime import datetime
 from pathlib import Path
 
 SCRIPTS_DIR = Path(__file__).parent
-OUTPUT_DIR = Path.home() / "Desktop" / "content-autopilot-output"
+_desktop = Path.home() / "Desktop"
+OUTPUT_DIR = (_desktop / "content-autopilot-output") if _desktop.is_dir() else (Path.home() / "content-autopilot-output")
 DATA_DIR = Path.home() / ".content-autopilot"
 
 # ANSI colors for terminal output
@@ -397,10 +398,17 @@ def main():
     import webbrowser
 
     if note_file.exists():
-        # Copy note to clipboard
+        # Copy note to clipboard (cross-platform)
         try:
             note_text = note_file.read_text(encoding="utf-8")
-            subprocess.run(["pbcopy"], input=note_text, text=True, timeout=5)
+            import platform as _plat
+            if _plat.system() == "Darwin":
+                subprocess.run(["pbcopy"], input=note_text, text=True, timeout=5)
+            elif _plat.system() == "Linux":
+                subprocess.run(["xclip", "-selection", "clipboard"], input=note_text, text=True, timeout=5)
+            # Windows: clip command
+            elif _plat.system() == "Windows":
+                subprocess.run(["clip"], input=note_text, text=True, timeout=5)
             p(dim("  note記事をクリップボードにコピー済み"))
         except (FileNotFoundError, subprocess.TimeoutExpired):
             pass

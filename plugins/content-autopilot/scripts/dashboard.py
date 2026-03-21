@@ -27,7 +27,8 @@ from grader import detect_platform, grade_content
 # Paths
 # ---------------------------------------------------------------------------
 
-OUTPUT_DIR = Path.home() / "Desktop" / "content-autopilot-output"
+_desktop = Path.home() / "Desktop"
+OUTPUT_DIR = (_desktop / "content-autopilot-output") if _desktop.is_dir() else (Path.home() / "content-autopilot-output")
 CONFIG_DIR = Path.home() / ".content-autopilot"
 HISTORY_FILE = CONFIG_DIR / "content-history.json"
 PROFILE_FILE = CONFIG_DIR / "profile.json"
