@@ -99,7 +99,22 @@ STATE: GENERATE (Step 4/8)
     - ~/Desktop/content-autopilot-output/note_{date}{suffix}.md
     - ~/Desktop/content-autopilot-output/x_{date}{suffix}.md
     - ~/Desktop/content-autopilot-output/instagram_{date}{suffix}.md
-  → STATE: GRADE
+  → 
+STATE: IMAGE (Step 4.5 — OGP画像生成)
+  → MCPツール mcp__gemini-image__generate_image が利用可能か確認
+  → 利用可能:
+    → 記事のトピックに基づいたOGP画像を自動生成
+    → プロンプト: "Modern minimalist blog header for {topic}. Dark gradient, geometric shapes, professional."
+    → aspect_ratio: "16:9"
+    → 保存先: ~/Desktop/content-autopilot-output/note_ogp_{date}.png
+  → 利用不可: スキップ
+
+  Output to user (成功):
+    [4.5] OGP image → generated ✓
+  Output to user (スキップ):
+    [4.5] OGP image → Gemini MCP未設定（スキップ）
+
+STATE: GRADE
 
   生成時の品質ルール（厳守）:
   - 最初の1文は「？」「数字」「意外な事実」のいずれかを含む
@@ -109,6 +124,21 @@ STATE: GENERATE (Step 4/8)
 
   Output to user:
     [4/8] Generating: note({N}字) + X({N}tweets) + IG
+
+
+STATE: IMAGE (Step 4.5 — OGP画像生成)
+  → MCPツール mcp__gemini-image__generate_image が利用可能か確認
+  → 利用可能:
+    → 記事のトピックに基づいたOGP画像を自動生成
+    → プロンプト: "Modern minimalist blog header for {topic}. Dark gradient, geometric shapes, professional."
+    → aspect_ratio: "16:9"
+    → 保存先: ~/Desktop/content-autopilot-output/note_ogp_{date}.png
+  → 利用不可: スキップ
+
+  Output to user (成功):
+    [4.5] OGP image → generated ✓
+  Output to user (スキップ):
+    [4.5] OGP image → Gemini MCP未設定（スキップ）
 
 STATE: GRADE (Step 5/8)
   → python3 ${CLAUDE_PLUGIN_ROOT}/scripts/grader.py {note_file} --json
