@@ -228,7 +228,7 @@ STATE: REPORT (Step 8/8)
 
   → 自動公開アシスト:
     1. note記事をクリップボードにコピー（pbcopy）
-    2. https://note.com/post をブラウザで開く（ユーザーは貼り付けるだけ）
+    2. note.com にログインし「投稿」ボタンからテキスト投稿画面を開く
     3. Xの投稿画面を開く: https://x.com/intent/tweet?text={1ツイート目のURLエンコード}
 
   Output to user:

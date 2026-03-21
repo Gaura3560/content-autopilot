@@ -438,7 +438,7 @@ def main():
             # Windows: clip command
             elif _plat.system() == "Windows":
                 subprocess.run(["clip"], input=note_text, text=True, timeout=5)
-            p(dim("  note記事をクリップボードにコピー済み → note.com/post で貼り付けるだけ"))
+            p(dim("  note記事をクリップボードにコピー済み → note.com「投稿」ボタンから貼り付け"))
         except (FileNotFoundError, subprocess.TimeoutExpired):
             pass
 
