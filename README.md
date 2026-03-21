@@ -146,7 +146,9 @@ Claudeは優秀なライターですが、**セッションを跨いだ記憶と
 | `/publish` | Notion/Gmail/Zapierに連携 |
 | `/schedule` | カレンダーにリマインダー登録 |
 | `/content-analytics` | コンテンツ分析 |
+| `/deep-audit` | システム整合性チェック |
 | `/log-performance` | PV・いいね数→学習 |
+| `/skills` | 全スキル一覧 |
 | `/cron-setup` | 毎日自動実行をcron設定 |
 
 ## 技術構成
@@ -155,7 +157,7 @@ Claudeは優秀なライターですが、**セッションを跨いだ記憶と
 plugins/content-autopilot/
 ├── skills/      129 SKILL.md
 ├── scripts/     12 Python scripts (4,000+ LOC)
-├── commands/    9 slash commands
+├── commands/    11 slash commands
 └── tests        23/23 pass
 ```
 
