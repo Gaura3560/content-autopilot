@@ -69,6 +69,125 @@ SAMPLE_PROFILE = {
 }
 
 
+
+SAMPLE_NOTE = """# 3つのAI活用法で業務時間を半分にした話
+
+「AIを使ってるのに、なぜ効率が上がらないのか？」
+
+**この記事でわかること**
+- チャットボットとAIエージェントの決定的な違い
+- 実際に業務時間を50%削減した3つの方法
+- 明日から始められる導入ステップ
+
+そう感じたことはありませんか。ChatGPTに質問して、回答を読んで、また質問する。このサイクルを繰り返していると、ある疑問が浮かんできます。
+
+「これ、本当に効率化できているのか？」
+
+答えはNoです。チャットボットに質問するだけでは、作業の主導権は人間のまま。本当の効率化は、AIが自律的に動く「エージェント」を活用することで初めて実現します。
+
+---
+
+## なぜチャットボットでは不十分なのか？
+
+チャットボットは「聞かれたら答える」ツールです。人間が質問を考え、プロンプトを書き、回答を読む。すべてのステップに人間の判断が必要です。
+
+一方、AIエージェントは「ゴールを与えると自分で考えて実行する」存在です。途中の判断はエージェントが自律的に行います。
+
+この違いは小さく見えて、1タスクあたり30分〜2時間の差を生みます。
+
+---
+
+## 実際に効果があった3つの活用法
+
+### 1. 日次レポートの完全自動化
+
+毎朝30分かけていた売上レポートの作成をAIエージェントに任せました。データの収集、グラフの生成、Slackへの投稿まで自動。人間がやるのは異常値のチェックだけです。
+
+結果: 月間10時間の削減。
+
+### 2. カスタマーサポートの一次対応
+
+問い合わせの70%は定型的な質問です。AIエージェントが感情分析を行い、定型質問は自動回答、複雑な案件だけ人間にエスカレーション。
+
+結果: 対応速度が3倍、満足度は92%に向上。
+
+### 3. コンテンツ制作のパイプライン化
+
+トレンド調査、記事執筆、SNS投稿の書き分けを一つのパイプラインで自動化。1日3時間かかっていた作業が15分のレビューだけに。
+
+結果: 週15時間の創出。月間60時間。
+
+---
+
+## まとめ
+
+AIの活用は「質問する」から「任せる」へ進化しています。まずは1つの繰り返しタスクから始めてみてください。
+
+フォローしていただけると、最新のAI活用情報をお届けします。続きはこちらの記事で詳しく解説しています。
+"""
+
+SAMPLE_X = """1/6
+AIを使ってるのに効率が上がらない人へ。
+原因は「チャットボット止まり」だから。
+エージェントAIに切り替えたら世界が変わった。具体的に3つ共有する🧵
+
+---
+
+2/6
+①日次レポートの完全自動化
+データ収集→グラフ生成→Slack投稿まで全自動。
+人間がやるのは異常値チェックだけ。
+月10時間の削減。
+
+---
+
+3/6
+②カスタマーサポートの一次対応
+問い合わせの70%は定型質問。
+AIが感情分析→定型は自動回答→複雑案件だけ人間へ。
+対応速度3倍、満足度92%。
+
+---
+
+4/6
+③コンテンツ制作のパイプライン化
+トレンド調査→記事執筆→SNS書き分けを全自動化。
+1日3時間→15分のレビューだけ。
+週15時間の創出。
+
+---
+
+5/6
+共通するポイントは「小さく始める」こと。
+いきなり全社導入は失敗する。
+1つのタスクで2週間試して、効果を数字で確認。
+
+---
+
+6/6
+AIの活用は「質問する」から「任せる」へ。
+詳しい導入ステップはnoteで解説しています。
+プロフィールのリンクからどうぞ。
+"""
+
+SAMPLE_IG = """AIを使っても効率が上がらない本当の理由、知っていますか？
+
+チャットボットに質問するだけでは、作業の主導権は人間のまま。
+本当の効率化は「AIエージェント」で実現する。
+
+実際に効果があった3つの方法:
+
+📊 日次レポート自動化 → 月10時間削減
+🤝 サポート一次対応 → 対応速度3倍
+📝 コンテンツ制作 → 1日3時間→15分
+
+まずは1つの繰り返しタスクから始めてみてください。
+詳しい導入ガイドはプロフィールのリンクから無料でダウンロードできます👆
+
+#AI #AIエージェント #業務効率化 #自動化 #DX #生産性向上 #働き方改革 #ChatGPT #Claude #AIビジネス #リモートワーク #テクノロジー #スタートアップ #フリーランス #副業 #マーケティング #コンテンツマーケティング #デジタルマーケティング #ビジネス成長 #AI活用 #プログラミング #データ分析 #クラウド #SaaS #イノベーション #未来の働き方 #ビジネスハック #経営者 #個人事業主 #note
+"""
+
+
 def init_file(path: Path, default_data: dict, force: bool = False) -> str:
     """Initialize a data file if it doesn't exist. Returns status message."""
     if path.exists() and not force:
@@ -110,6 +229,25 @@ def main():
 
     print(init_file(HISTORY_PATH, EMPTY_HISTORY, force))
     print(init_file(SERIES_PATH, EMPTY_SERIES, force))
+
+    # Create sample content files if output dir is empty
+    output_files = list(OUTPUT_DIR.glob("*.md"))
+    if not output_files or force:
+        from datetime import datetime
+        today = datetime.now().strftime("%Y-%m-%d")
+        note_path = OUTPUT_DIR / f"note_{today}.md"
+        x_path = OUTPUT_DIR / f"x_{today}.md"
+        ig_path = OUTPUT_DIR / f"instagram_{today}.md"
+        
+        if not note_path.exists() or force:
+            note_path.write_text(SAMPLE_NOTE, encoding="utf-8")
+            print(f"  CREATED  note_{today}.md (sample content)")
+        if not x_path.exists() or force:
+            x_path.write_text(SAMPLE_X, encoding="utf-8")
+            print(f"  CREATED  x_{today}.md (sample content)")
+        if not ig_path.exists() or force:
+            ig_path.write_text(SAMPLE_IG, encoding="utf-8")
+            print(f"  CREATED  instagram_{today}.md (sample content)")
 
     print()
     print("Initialization complete.")

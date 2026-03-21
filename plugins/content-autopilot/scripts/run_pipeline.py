@@ -65,18 +65,10 @@ def main():
         sys.executable, str(SCRIPTS_DIR / "autopilot.py"), "--mode", "execute"
     ])
 
-    if manifest and manifest.get("status") == "ready":
-        stage = manifest.get("recommended_stage", "TOFU")
-        category = manifest.get("chosen_category", "trending")
-        theme = "AI x ビジネス"
-        profile_status = "auto-created: default" if not DATA_DIR.joinpath("profile.json").exists() else "loaded"
-        p(f"[1/8] Profile {profile_status}")
-        p(f'      Theme: "{theme}" | Stage: {stage}')
-    else:
-        # Init data if profile missing
-        init_result = run_script([
-            sys.executable, str(SCRIPTS_DIR / "init_data.py")
-        ])
+    if not manifest or manifest.get("status") != "ready":
+        # Auto-init: create profile + sample content
+        p("[1/8] First run detected → initializing...")
+        run_script([sys.executable, str(SCRIPTS_DIR / "init_data.py")])
         manifest = run_script([
             sys.executable, str(SCRIPTS_DIR / "autopilot.py"), "--mode", "execute"
         ])
@@ -84,10 +76,16 @@ def main():
             p("[1/8] ✗ Pipeline init failed")
             p("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
             sys.exit(1)
-        stage = manifest.get("recommended_stage", "TOFU")
-        category = manifest.get("chosen_category", "trending")
+
+    stage = manifest.get("recommended_stage", "TOFU")
+    category = manifest.get("chosen_category", "trending")
+    was_auto = not DATA_DIR.joinpath("profile.json").exists() or manifest.get("status") == "ready"
+
+    if was_auto:
         p("[1/8] Profile loaded (auto-created: default)")
-        p(f'      Theme: "AI x ビジネス" | Stage: {stage}')
+    else:
+        p("[1/8] Profile loaded")
+    p(f'      Theme: "AI x ビジネス" | Stage: {stage}')
 
     p("")
 
