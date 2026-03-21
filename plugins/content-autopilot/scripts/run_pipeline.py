@@ -392,22 +392,33 @@ def main():
     p(f"         → キャプションをコピー → アプリに貼り付け")
     p("")
 
-    # Auto-open the note file and copy to clipboard
+    # Auto-publish: open note editor + X tweet intent + clipboard
+    import urllib.parse
+    import webbrowser
+
     if note_file.exists():
-        subprocess.Popen(
-            ["open", str(note_file)],
-            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-        )
-        # Copy note content to clipboard (macOS)
+        # Copy note to clipboard
         try:
             note_text = note_file.read_text(encoding="utf-8")
-            proc = subprocess.run(
-                ["pbcopy"], input=note_text, text=True, timeout=5
-            )
-            if proc.returncode == 0:
-                p(dim("  (note 記事をクリップボードにコピーしました — note.comに直接貼り付けできます)"))
+            subprocess.run(["pbcopy"], input=note_text, text=True, timeout=5)
+            p(dim("  note記事をクリップボードにコピー済み"))
         except (FileNotFoundError, subprocess.TimeoutExpired):
-            p(dim("  (note ファイルを開きました)"))
+            pass
+
+        # Open note.com editor
+        webbrowser.open("https://note.com/post")
+        p(dim("  note.com/post を開きました → 貼り付けるだけで投稿できます"))
+
+    if x_file.exists():
+        # Open X tweet intent with first tweet
+        x_text = x_file.read_text(encoding="utf-8")
+        first_tweet = x_text.split("---")[0].strip()
+        # Remove "1/6\n" prefix
+        lines = first_tweet.split("\n")
+        tweet_body = "\n".join(lines[1:]).strip() if len(lines) > 1 else first_tweet
+        tweet_url = f"https://x.com/intent/tweet?text={urllib.parse.quote(tweet_body)}"
+        webbrowser.open(tweet_url)
+        p(dim("  X投稿画面を開きました → 1ツイート目がプリセット済み"))
 
 
 if __name__ == "__main__":

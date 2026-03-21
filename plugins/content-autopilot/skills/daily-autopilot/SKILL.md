@@ -195,8 +195,10 @@ STATE: REPORT (Step 8/8)
   → summaryデータからIntelligence Reportを構築
   → パイプライン完了フッターを表示 → 終了
 
-  → 生成されたファイルをユーザーのためにopenコマンドで開く:
-    open ~/Desktop/content-autopilot-output/note_{date}{suffix}.md
+  → 自動公開アシスト:
+    1. note記事をクリップボードにコピー（pbcopy）
+    2. https://note.com/post をブラウザで開く（ユーザーは貼り付けるだけ）
+    3. Xの投稿画面を開く: https://x.com/intent/tweet?text={1ツイート目のURLエンコード}
 
   Output to user:
     [8/8] Pipeline complete ✓
