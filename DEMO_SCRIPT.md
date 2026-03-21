@@ -57,7 +57,7 @@ rm -rf ~/Desktop/content-autopilot-output 2>/dev/null
 echo ""
 echo "  Content Autopilot"
 echo "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  129 skills | 10 Python scripts | 3 platforms | Zero intervention"
+echo "  129 skills | 12 Python scripts | 3 platforms | Zero intervention"
 echo ""
 ```
 
@@ -65,7 +65,7 @@ echo ""
 
 > Content Autopilot。
 > 「一度命じたら、あとは任せろ」を文字通り実現する、完全自律型コンテンツ生成プラグインです。
-> 129のスキル、10本のPythonスクリプト。人間が介入するのは、最初の1コマンドだけ。
+> 129のスキル、12本のPythonスクリプト。人間が介入するのは、最初の1コマンドだけ。
 
 ### タイミング
 
@@ -281,7 +281,7 @@ echo "  │   ├── content-writer/     Multi-platform generator"
 echo "  │   ├── trend-scout/        WebSearch + scoring"
 echo "  │   ├── content-grader/     6-axis quality gate"
 echo "  │   └── ... 125 more skills"
-echo "  └── scripts/    ← 10 Python scripts"
+echo "  └── scripts/    ← 12 Python scripts"
 echo "      ├── autopilot.py        Pipeline control + manifest"
 echo "      ├── grader.py           6-axis scoring engine"
 echo "      ├── dashboard.py        HTML dashboard generator"
@@ -301,7 +301,7 @@ ls plugins/content-autopilot/skills/ | wc -l
 ### ナレーション（日本語）
 
 > アーキテクチャを簡単に。
-> 129のスキルと10本のPythonスクリプトで構成されています。
+> 129のスキルと12本のPythonスクリプトで構成されています。
 >
 > 核になるのはdaily-autopilotスキル。これが状態機械として全体を制御します。
 > 各ステップの判断ロジックはPythonスクリプトが担い、
@@ -399,7 +399,7 @@ echo ""
 | 1:10-1:20 | Demo: Generate | 3プラットフォーム同時生成 | 10s |
 | 1:20-1:40 | Demo: Quality | 品質ゲート + 自動改善（自律判断#5、最重要シーン） | 20s |
 | 1:40-2:00 | Demo: Dashboard | プレパブリッシュ + ダッシュボード + Intelligence Report | 20s |
-| 2:00-2:30 | Architecture | 129 skills, 10 scripts, 状態機械 | 30s |
+| 2:00-2:30 | Architecture | 129 skills, 12 scripts, 状態機械 | 30s |
 | 2:30-2:50 | Why This Wins | Autonomy/Quality/Impact のまとめ | 20s |
 | 2:50-3:00 | Closing | コールトゥアクション、リポURL | 10s |
 
@@ -444,7 +444,7 @@ Content Autopilotにはフォールバック機構が組み込まれている:
 ---
 
 **[0:00]**
-Content Autopilot。「一度命じたら、あとは任せろ」を文字通り実現する、完全自律型コンテンツ生成プラグインです。129のスキル、10本のPythonスクリプト。人間が介入するのは、最初の1コマンドだけ。
+Content Autopilot。「一度命じたら、あとは任せろ」を文字通り実現する、完全自律型コンテンツ生成プラグインです。129のスキル、12本のPythonスクリプト。人間が介入するのは、最初の1コマンドだけ。
 
 **[0:15]**
 コンテンツマーケティングの現実。毎日のネタ探しに30分、3つのプラットフォームへの書き分けに2〜3時間、品質チェックは手動で属人的。これを、1コマンドでゼロにします。
@@ -468,7 +468,7 @@ Content Autopilot。「一度命じたら、あとは任せろ」を文字通り
 8項目のプレパブリッシュチェックを全パス。HTMLダッシュボードが自動生成されてブラウザで表示。Intelligence Reportで、品質トレンドやファネルバランスも可視化されます。
 
 **[2:00]**
-アーキテクチャ。129のスキルと10本のPythonスクリプト。daily-autopilotが状態機械として全体を制御。grader.pyが6軸採点、funnel_balance.pyがファネル計算、dashboard.pyがHTML可視化。スキル数129、嘘偽りなしです。
+アーキテクチャ。129のスキルと12本のPythonスクリプト。daily-autopilotが状態機械として全体を制御。grader.pyが6軸採点、funnel_balance.pyがファネル計算、dashboard.pyがHTML可視化。スキル数129、嘘偽りなしです。
 
 **[2:30]**
 なぜContent Autopilotが勝つのか。Autonomy。7つの判断ポイントすべてが自律的決定。ユーザー入力ゼロ。Quality。6軸採点と自動改善ループ。日本語ネイティブチェック。漢字率、文体一貫性、AI臭検出。Impact。Claude Codeさえあれば、どんなクリエイターでも今すぐ使えます。
