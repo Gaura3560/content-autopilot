@@ -397,7 +397,7 @@ def main():
         best_name = best.get("name", "N/A")
         best_pct = best.get("percentage", 0)
         fh = summary.get("funnel_health", {})
-        balanced = "balanced ✓" if fh.get("balanced") else "imbalanced ⚠"
+        balanced = "balanced ✓" if fh.get("balanced") else ("initial" if total_runs <= 1 else "imbalanced ⚠")
 
         p(bold("--- Intelligence Report ---"))
         p(f"Total runs: {total_runs} | Streak: {streak} days | Trend: {trend}")
@@ -439,12 +439,9 @@ def main():
             # Windows: clip command
             elif _plat.system() == "Windows":
                 subprocess.run(["clip"], input=note_text, text=True, timeout=5)
-            p(dim("  note記事をクリップボードにコピー済み"))
+            p(dim("  note記事をクリップボードにコピー済み → note.com/post で貼り付けるだけ"))
         except (FileNotFoundError, subprocess.TimeoutExpired):
             pass
-
-        # note.com editor hint (auto-open disabled to avoid disrupting judge's workflow)
-        p(dim("  note.com/post を開いて貼り付けるだけで投稿できます"))
 
     # X posting hint
     if x_file.exists():

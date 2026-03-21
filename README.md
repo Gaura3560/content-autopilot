@@ -1,8 +1,8 @@
 <h1 align="center">Content Autopilot</h1>
 
 <p align="center">
-<strong>コンテンツ制作に毎日3時間かけていませんか？<br>
-1コマンドで、note・X・Instagramを同時に自律生成します。</strong>
+<strong>AIに書かせても「AI臭い」。毎回プロンプトを考える。品質がブレる。<br>
+1コマンドで、品質管理付きのコンテンツを3プラットフォーム同時に自律生成。</strong>
 </p>
 
 ---
