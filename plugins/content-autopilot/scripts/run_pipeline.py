@@ -180,7 +180,6 @@ def main():
 
     if not manifest or manifest.get("status") != "ready":
         # Auto-init: create profile + sample content
-        p(f"{step('[1/8]')} First run detected → initializing...")
         run_script([sys.executable, str(SCRIPTS_DIR / "init_data.py")])
         manifest = run_script([
             sys.executable, str(SCRIPTS_DIR / "autopilot.py"), "--mode", "execute"
