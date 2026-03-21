@@ -94,7 +94,8 @@ STATE: SEARCH (Step 2/8)
           → "{fallback_topic}" ← auto-selected from library
 
 STATE: GENERATE (Step 4/8)
-  → content_specに従いコンテンツ一括生成
+  → content-writerスキルの仕様に従いコンテンツ一括生成
+  → 参照: plugins/content-autopilot/skills/content-writer/SKILL.md（タイトルロジック9種、プラットフォーム別仕様）
   → 各プラットフォーム用ファイルを保存:
     - ~/Desktop/content-autopilot-output/note_{date}{suffix}.md
     - ~/Desktop/content-autopilot-output/x_{date}{suffix}.md

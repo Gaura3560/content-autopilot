@@ -47,7 +47,7 @@ note: 82/100 ✓ (自動改善 +14点)
 ### 品質: Claude直接 vs Content Autopilot
 
 ```
-Claude直接:       56/100 (D) — AI臭5パターン、467文字
+Claude直接:       56/100 (D) — AI臭5パターン、836文字
   → "本記事では、AIを活用した業務効率化について解説します。"
 
 Content Autopilot: 94/100 (A) — AI臭ゼロ、2,841文字
