@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-Claude Code plugin for fully autonomous content creation.<br>
+完全自律型コンテンツ生成プラグイン（Claude Code対応）。<br>
 トレンド調査からコンテンツ生成、品質管理、ダッシュボード出力まで——<br>
 <strong>人間が介入するのは、最初の1コマンドだけ。</strong>
 </p>
