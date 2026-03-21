@@ -199,20 +199,20 @@ def check_tweet_length(content: str, platform: str) -> dict:
         if not text:
             continue
         length = count_chars_ja(text)
-        if length > 140:
+        if length > 280:
             violations.append(f"ツイート{i+1}: {length}文字")
 
     if violations:
         return {
             "name": "tweet_length",
             "pass": False,
-            "detail": f"140文字超過: {', '.join(violations)}",
+            "detail": f"280文字超過: {', '.join(violations)}",
         }
 
     return {
         "name": "tweet_length",
         "pass": True,
-        "detail": f"全ツイートが140文字以内",
+        "detail": f"全ツイートが280文字以内",
     }
 
 

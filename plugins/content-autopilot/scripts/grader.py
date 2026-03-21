@@ -280,11 +280,11 @@ def grade_platform_fit(content: str, platform: str) -> tuple[int, list[dict]]:
                 continue
             # Japanese: 140 chars (full-width counted as 1)
             tweet_len = count_japanese_chars(tweet_text)
-            if tweet_len > 140:
+            if tweet_len > 280:
                 score -= 2
                 issues.append({
                     "field": f"tweet_{i+1}",
-                    "action": f"ツイート{i+1}を140文字以内にする（現在{tweet_len}文字）",
+                    "action": f"ツイート{i+1}を280文字以内にする（現在{tweet_len}文字）",
                     "severity": "high",
                 })
 
