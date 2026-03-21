@@ -272,13 +272,30 @@ def main():
     ig_name = ig_file.name if ig_file.exists() else f"instagram_{today}.md"
     p(bold("--- 次のステップ ---"))
     p("")
-    p(f"  note:  open ~/Desktop/content-autopilot-output/{note_name}")
+    p(f"  {ok('note')}:  ~/Desktop/content-autopilot-output/{note_name}")
     p(f"         → note.com で「投稿」→ マークダウン貼り付け")
-    p(f"  X:     open ~/Desktop/content-autopilot-output/{x_name}")
-    p(f"         → 1/Nから順にツイート")
-    p(f"  IG:    open ~/Desktop/content-autopilot-output/{ig_name}")
+    p(f"  {ok('X')}:     ~/Desktop/content-autopilot-output/{x_name}")
+    p(f"         → 1/Nから順にツイート（{dim('Typefullyで一括投稿も可')}）")
+    p(f"  {ok('IG')}:    ~/Desktop/content-autopilot-output/{ig_name}")
     p(f"         → キャプションをコピー → アプリに貼り付け")
     p("")
+
+    # Auto-open the note file and copy to clipboard
+    if note_file.exists():
+        subprocess.Popen(
+            ["open", str(note_file)],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+        # Copy note content to clipboard (macOS)
+        try:
+            note_text = note_file.read_text(encoding="utf-8")
+            proc = subprocess.run(
+                ["pbcopy"], input=note_text, text=True, timeout=5
+            )
+            if proc.returncode == 0:
+                p(dim("  (note 記事をクリップボードにコピーしました — note.comに直接貼り付けできます)"))
+        except (FileNotFoundError, subprocess.TimeoutExpired):
+            p(dim("  (note ファイルを開きました)"))
 
 
 if __name__ == "__main__":
