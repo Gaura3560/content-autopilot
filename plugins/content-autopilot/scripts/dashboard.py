@@ -223,7 +223,7 @@ def score_color(score: int) -> str:
     """Return CSS colour for a quality score."""
     if score >= 85:
         return "#3fb950"
-    if score >= 70:
+    if score >= 75:
         return "#d29922"
     return "#f85149"
 
