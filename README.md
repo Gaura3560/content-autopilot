@@ -28,8 +28,8 @@ Claude Code plugin for fully autonomous content creation.<br>
       → "AIエージェントが変える働き方" (score: 0.91) ← selected
 [4/8] Generating: note(3,200字) + X(6tweets) + IG
 [5/8] Quality gate:
-      note: 68/100 → auto-improving hook + structure...
-      note: 81/100 ✓ (improved +13)
+      note: 72/100 → auto-improving density + AI smell...
+      note: 85/100 ✓ (improved +13)
       X: 79/100 ✓
       IG: 76/100 ✓
 [6/8] Pre-publish: 8/8 checks passed ✓
