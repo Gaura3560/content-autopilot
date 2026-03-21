@@ -137,6 +137,23 @@ python3 test_scripts.py              # 23テスト全通過を確認
 
 ---
 
+
+## 外部連携（MCP）
+
+利用可能なMCPサーバーがあれば、パイプライン完了後に自動連携します:
+
+| サービス | 連携内容 | 必要なMCP |
+|---------|---------|----------|
+| **Notion** | 記事をNotionページに自動保存 | Notion MCP |
+| **Gmail** | 記事をGmail下書きに保存 | Gmail MCP |
+| **Zapier** | X/Instagram投稿をトリガー | Zapier MCP |
+
+MCP未設定の場合はスキップされ、ローカルファイル出力のみで完了します。
+
+**実証済み**: Notion MCPでの記事自動保存を確認。パイプライン完了→Notionページ作成が1コマンドで完了。
+
+手動で連携する場合: `/publish`
+
 ## コマンド
 
 | コマンド | 機能 |
@@ -146,6 +163,7 @@ python3 test_scripts.py              # 23テスト全通過を確認
 | `/trend-scout` | トレンドリサーチ |
 | `/content-analytics` | コンテンツ分析 |
 | `/deep-audit` | システム監査 |
+| `/publish` | Notion/Gmail/Zapierに連携 |
 | `/log-performance` | PV・いいね数を記録→学習 |
 | `/skills` | 全スキル一覧 |
 
