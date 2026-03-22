@@ -73,10 +73,11 @@ STATE: INIT (Step 1/8)
 
 STATE: SEARCH (Step 2/8)
   → autopilot.pyの結果からファネルバランスを表示
-  → WebSearch(execution_plan[0].query)
-  → 検索結果あり:
-    → 結果からトピックを1つ自動選択（最もエンゲージメントが期待できるもの）
-    → STATE: GENERATE
+  → 2つの検索を実行:
+    1. WebSearch(execution_plan[0].query) — 一般的なトレンド
+    2. WebSearch("{テーマ} site:x.com OR site:twitter.com 話題 バズ 2026") — Xで今バズっている話題
+  → 両方の結果を統合し、トピックを1つ自動選択（Xでのバズ度を優先）
+  → STATE: GENERATE
   → 検索結果なし / WebSearch失敗:
     → execution_planのfallback_topicを使用
     → STATE: GENERATE
