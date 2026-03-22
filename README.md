@@ -22,7 +22,9 @@ AIにコンテンツを書かせても、結局こうなります:
 
 初回はObsidian/note/X(API or @ユーザー名)/テキストファイルから過去の投稿を読み込み、あなたの文体（口癖、漢字率、フックパターン等）を分析。2回目以降は学習済みの文体で自動生成。
 
-![Demo](docs/demo.gif)
+[![デモ動画](docs/demo.gif)](https://youtu.be/ygS4eTVqcRQ)
+
+> [デモ動画を見る (YouTube)](https://youtu.be/ygS4eTVqcRQ)
 
 ```
 ━━━━ Content Autopilot ━━━━━━━━━━━━━━━━━━
